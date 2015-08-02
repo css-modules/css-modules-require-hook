@@ -1,0 +1,7 @@
+.localName {
+  color: red;
+}
+
+.localName:hover {
+  color: blue;
+}

@@ -1,0 +1,11 @@
+:import("./colors.css") {
+  i__tmp_import_djhgdsag: blackShadow;
+}
+
+:export {
+  localName: x__single_import_export_source__localName i__tmp_import_djhgdsag;
+}
+
+.x__single_import_export_source__localName {
+  color: red;
+}

@@ -1,0 +1,4 @@
+.foo {
+  composes: b from "./b.css";
+  color: #f00;
+}
