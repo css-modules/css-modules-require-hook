@@ -1,40 +1,66 @@
 'use strict';
 
-import Parser from 'css-modules-loader-core/lib/parser';
+import { plugin } from 'postcss';
 
-class SyncParser extends Parser {
-  plugin(css, result) {
-    this.fetchAllImports(css);
-    this.linkImportedSymbols(css);
-    this.extractExports(css);
-  }
+const importRegexp = /^:import\((.+)\)$/
 
-  fetchImport(importNode, relativeTo, depNr) {
+export default plugin('parser', function (opts) {
+  opts = opts || {};
+
+  let exportTokens = opts.exportTokens;
+  let translations = {};
+
+  const fetchImport = (importNode, relativeTo, depNr) => {
     let file = importNode.selector.match( importRegexp )[1];
-    let depTrace = this.trace + String.fromCharCode(depNr);
-    let exp = this.pathFetcher(file, relativeTo, depTrace);
+    let depTrace = opts.trace + String.fromCharCode(depNr);
+    let exports = opts.pathFetcher(file, relativeTo, depTrace);
 
     importNode.each(decl => {
       if (decl.type === 'decl') {
-        this.translations[decl.prop] = exports[decl.value]
+        translations[decl.prop] = exports[decl.value];
       }
     });
 
     importNode.removeSelf();
   }
 
-  fetchImport( importNode, relativeTo, depNr ) {
-    let file = importNode.selector.match( importRegexp )[1],
-      depTrace = this.trace + String.fromCharCode(depNr)
-    return this.pathFetcher( file, relativeTo, depTrace ).then( exports => {
-      importNode.each( decl => {
-        if ( decl.type == 'decl' ) {
-          this.translations[decl.prop] = exports[decl.value]
-        }
-      } )
-      importNode.removeSelf()
-    }, err => console.log( err ) )
-  }
-}
+  const fetchAllImports = css => {
+    let imports = 0;
 
-export default SyncParser;
+    css.each(node => {
+      if (node.type === 'rule' && node.selector.match(importRegexp)) {
+        fetchImport(node, css.source.input.from, imports++);
+      }
+    });
+  }
+
+  const linkImportedSymbols = css => css.eachDecl(decl => {
+    Object.keys(translations).forEach(translation => {
+      decl.value = decl.value.replace(translation, translations[translation])
+    });
+  });
+
+  const handleExport = exportNode => {
+    exportNode.each(decl => {
+      if (decl.type === 'decl') {
+        Object.keys(translations).forEach(translation => {
+          decl.value = decl.value.replace(translation, translations[translation])
+        });
+
+        exportTokens[decl.prop] = decl.value;
+      }
+    });
+
+    exportNode.removeSelf();
+  }
+
+  const extractExports = css => css.each(node => {
+    if (node.type === 'rule' && node.selector === ':export') handleExport(node);
+  });
+
+  return css => {
+    fetchAllImports(css);
+    linkImportedSymbols(css);
+    extractExports(css);
+  }
+});
