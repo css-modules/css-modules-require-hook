@@ -1,9 +1,10 @@
 'use strict';
 
-import '../src';
 import fs from 'fs'
 import path from 'path'
 import { equal } from 'assert';
+
+import hook from '../src';
 
 const pipelines = {
   'test-cases': undefined,
@@ -16,7 +17,8 @@ Object.keys(pipelines).forEach(dirname => {
 
     fs.readdirSync(testDir).forEach(testCase => {
       if (fs.existsSync(path.join(testDir, testCase, 'source.css'))) {
-        it('should ' + testCase.replace(/-/g, ' '), done => {
+        it('should ' + testCase.replace(/-/g, ' '), () => {
+          hook({use: pipelines[dirname]});
           let expectedTokens = JSON.parse(fs.readFileSync(path.join(testDir, testCase, 'expected.json'), 'utf-8'));
           let tokens = require(`${testDir}/${testCase}/source.css`);
 
@@ -34,7 +36,8 @@ describe( 'multiple sources', () => {
   let dirname = 'test-cases';
 
   if (fs.existsSync(path.join(testDir, testCase, 'source1.css'))) {
-    it('should ' + testCase.replace(/-/g, ' '), done => {
+    it('should ' + testCase.replace(/-/g, ' '), () => {
+      hook({use: pipelines[dirname]});
       let expectedTokens = JSON.parse(fs.readFileSync(path.join(testDir, testCase, 'expected.json'), 'utf-8'));
       let tokens1 = require(`${testDir}/${testCase}/source1.css`);
       let tokens2 = require(`${testDir}/${testCase}/source2.css`);
