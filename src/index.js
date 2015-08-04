@@ -13,8 +13,17 @@ import parser from './parser';
 
 let plugins = [localByDefault, extractImports, scope];
 
-const load = (sourceString, sourcePath, trace, pathFetcher) => {
+/**
+ * @param  {string}   sourceString The file content
+ * @param  {string}   sourcePath
+ * @param  {string}   trace
+ * @param  {function} pathFetcher
+ * @return {object}
+ */
+function load(sourceString, sourcePath, trace, pathFetcher) {
+  // @todo To think about a better way to export tokens from the plugin
   let exportTokens = {};
+
   let result = postcss(plugins.concat(new parser({ exportTokens, pathFetcher, trace })))
     .process(sourceString, {from: '/' + sourcePath})
     .stringify();

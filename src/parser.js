@@ -7,6 +7,7 @@ const importRegexp = /^:import\((.+)\)$/
 export default plugin('parser', function (opts) {
   opts = opts || {};
 
+  // have to export it outside of the plugin :()
   let exportTokens = opts.exportTokens;
   let translations = {};
 
