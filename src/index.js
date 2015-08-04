@@ -58,4 +58,11 @@ hook(filename => {
  * @param  {array}  opts.u
  * @param  {array}  opts.use
  */
-export default function configure(opts) {}
+export default function configure(opts) {
+  opts = opts || {};
+
+  let customPlugins = opts.u || opts.use;
+  plugins = Array.isArray(customPlugins)
+    ? customPlugins
+    : [localByDefault, extractImports, scope];
+}
