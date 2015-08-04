@@ -1,0 +1,13 @@
+:import("./colors.css") {
+  i__black: black;
+  i__white: white;
+}
+
+:export {
+  lol: x__lol;
+}
+
+.x__lol {
+  color: i__black;
+  background: i__white;
+}

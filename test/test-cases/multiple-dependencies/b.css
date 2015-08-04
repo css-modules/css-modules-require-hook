@@ -1,0 +1,8 @@
+.b1 {
+  composes: d1 d2 from "./d.css";
+  color: #b1b1b1;
+}
+
+.b2 {
+  color: #b2b2b2;
+}

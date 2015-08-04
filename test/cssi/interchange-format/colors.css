@@ -1,0 +1,7 @@
+:export {
+  blackShadow: x__single_import_export_colors__blackShadow;
+}
+
+.x__single_import_export_colors__blackShadow {
+  box-shadow: 0 0 10px -2px black;
+}
