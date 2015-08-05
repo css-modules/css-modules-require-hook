@@ -3,7 +3,7 @@
 import './guard';
 import hook from './hook';
 import postcss from 'postcss';
-import { basename, dirname, join, resolve } from 'path';
+import { basename, dirname, join, relative, resolve } from 'path';
 import { readFileSync } from 'fs';
 
 import extractImports from 'postcss-modules-extract-imports';
@@ -12,6 +12,7 @@ import scope from 'postcss-modules-scope';
 import parser from './parser';
 
 let plugins = [localByDefault, extractImports, scope];
+let rootDir;
 
 /**
  * @param  {string}   sourceString The file content
@@ -32,7 +33,7 @@ function load(sourceString, sourcePath, trace, pathFetcher) {
 }
 
 hook(filename => {
-  const root = dirname(filename);
+  const root = rootDir || dirname(filename);
   const sources = {};
   const tokensByFile = {};
   let importNr = 0;
@@ -59,7 +60,7 @@ hook(filename => {
     return exportTokens;
   }
 
-  return fetch(basename(filename), '/');
+  return fetch(relative(root, filename), '/');
 });
 
 /**
@@ -74,4 +75,8 @@ export default function configure(opts) {
   plugins = Array.isArray(customPlugins)
     ? customPlugins
     : [localByDefault, extractImports, scope];
+
+  if (opts.root && typeof opts.root === 'string') {
+    rootDir = opts.root;
+  }
 }
