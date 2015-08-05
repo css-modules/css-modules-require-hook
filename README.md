@@ -8,7 +8,7 @@ One of the ways you can compile [CSS Modules](https://github.com/css-modules/css
 ## Install
 
 ```bash
-$ npm i sullenor/css-modules-require-hook
+$ npm i css-modules-require-hook
 ```
 
 ## Usage
