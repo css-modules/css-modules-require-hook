@@ -7,8 +7,7 @@ const importRegexp = /^:import\((.+)\)$/
 export default plugin('parser', function (opts) {
   opts = opts || {};
 
-  // have to export it outside of the plugin :()
-  let exportTokens = opts.exportTokens;
+  let exportTokens = {};
   let translations = {};
 
   const fetchImport = (importNode, relativeTo, depNr) => {
@@ -63,5 +62,6 @@ export default plugin('parser', function (opts) {
     fetchAllImports(css);
     linkImportedSymbols(css);
     extractExports(css);
+    css.tokens = exportTokens;
   }
 });

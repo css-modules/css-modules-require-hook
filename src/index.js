@@ -22,14 +22,11 @@ let rootDir;
  * @return {object}
  */
 function load(sourceString, sourcePath, trace, pathFetcher) {
-  // @todo To think about a better way to export tokens from the plugin
-  let exportTokens = {};
-
-  let result = postcss(plugins.concat(new parser({ exportTokens, pathFetcher, trace })))
+  let result = postcss(plugins.concat(new parser({ pathFetcher, trace })))
     .process(sourceString, {from: '/' + sourcePath})
-    .stringify();
+    .root;
 
-  return { injectableSource: result.css, exportTokens: exportTokens };
+  return { injectableSource: result.css, exportTokens: result.tokens };
 }
 
 hook(filename => {
