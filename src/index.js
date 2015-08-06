@@ -6,12 +6,12 @@ import postcss from 'postcss';
 import { basename, dirname, join, relative, resolve } from 'path';
 import { readFileSync } from 'fs';
 
-import extractImports from 'postcss-modules-extract-imports';
-import localByDefault from 'postcss-modules-local-by-default';
-import scope from 'postcss-modules-scope';
-import parser from './parser';
+import ExtractImports from 'postcss-modules-extract-imports';
+import LocalByDefault from 'postcss-modules-local-by-default';
+import Scope from 'postcss-modules-scope';
+import Parser from './parser';
 
-let plugins = [localByDefault, extractImports, scope];
+let plugins = [LocalByDefault, ExtractImports, Scope];
 let rootDir;
 
 /**
@@ -22,8 +22,8 @@ let rootDir;
  * @return {object}
  */
 function load(sourceString, sourcePath, trace, pathFetcher) {
-  let result = postcss(plugins.concat(new parser({ pathFetcher, trace })))
-    .process(sourceString, {from: '/' + sourcePath})
+  let result = postcss(plugins.concat(new Parser({ pathFetcher, trace })))
+    .process(sourceString, {from: sourcePath})
     .root;
 
   return { injectableSource: result.css, exportTokens: result.tokens };
@@ -71,7 +71,7 @@ export default function configure(opts) {
   let customPlugins = opts.u || opts.use;
   plugins = Array.isArray(customPlugins)
     ? customPlugins
-    : [localByDefault, extractImports, scope];
+    : [LocalByDefault, ExtractImports, Scope];
 
   if (opts.root && typeof opts.root === 'string') {
     rootDir = opts.root;
