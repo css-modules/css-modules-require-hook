@@ -26,12 +26,11 @@ function load(sourceString, sourcePath, trace, pathFetcher) {
     .process(sourceString, {from: sourcePath})
     .root;
 
-  return { injectableSource: result.css, exportTokens: result.tokens };
+  return result.tokens;
 }
 
 hook(filename => {
   const root = rootDir || dirname(filename);
-  const sources = {};
   const tokensByFile = {};
   let importNr = 0;
 
@@ -49,9 +48,8 @@ hook(filename => {
     }
 
     let source = readFileSync(fileRelativePath, 'utf-8');
-    let { injectableSource, exportTokens } = load(source, rootRelativePath, trace, fetch);
+    let exportTokens = load(source, rootRelativePath, trace, fetch);
 
-    sources[trace] = injectableSource;
     tokensByFile[fileRelativePath] = exportTokens;
 
     return exportTokens;
