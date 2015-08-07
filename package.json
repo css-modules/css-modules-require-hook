@@ -18,6 +18,7 @@
     "eslint-config-airbnb-lite": "^1.0.3",
     "eslint-watch": "^1.2.4",
     "in-publish": "^2.0.0",
+    "isparta": "^3.0.3",
     "mocha": "^2.2.5",
     "precommit-hook": "^3.0.0"
   },
@@ -25,7 +26,8 @@
     "start": "esw -w .",
     "lint": "eslint .",
     "pretest": "npm run -s lint",
-    "test": "npm run -s build && mocha --compilers js:babel/register",
+    "test": "mocha --compilers js:babel/register",
+    "test:cov": "`npm bin`/babel-node `npm bin`/isparta cover --report text --report html `npm bin`/_mocha",
     "build": "babel src --out-dir dist",
     "prepublish": "in-publish && npm run -s build || in-install"
   },
