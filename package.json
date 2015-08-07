@@ -18,7 +18,8 @@
     "eslint-config-airbnb-lite": "^1.0.3",
     "eslint-watch": "^1.2.4",
     "in-publish": "^2.0.0",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "precommit-hook": "^3.0.0"
   },
   "scripts": {
     "start": "esw -w .",
@@ -45,5 +46,9 @@
   "bugs": {
     "url": "https://github.com/sullenor/css-modules-require-hook/issues"
   },
-  "homepage": "https://github.com/sullenor/css-modules-require-hook"
+  "homepage": "https://github.com/sullenor/css-modules-require-hook",
+  "pre-commit": [
+    "lint",
+    "test"
+  ]
 }
