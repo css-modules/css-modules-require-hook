@@ -11,11 +11,20 @@
   },
   "devDependencies": {
     "babel": "^5.8.20",
+    "babel-eslint": "^4.0.5",
     "css-modules-loader-core": "0.0.12",
+    "eslint": "^1.0.0",
+    "eslint-config-airbnb": "0.0.7",
+    "eslint-config-airbnb-lite": "^1.0.3",
+    "eslint-watch": "^1.2.4",
     "in-publish": "^2.0.0",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "precommit-hook": "^3.0.0"
   },
   "scripts": {
+    "start": "esw -w .",
+    "lint": "eslint .",
+    "pretest": "npm run -s lint || true",
     "test": "npm run -s build && mocha --compilers js:babel/register",
     "build": "babel src --out-dir dist",
     "prepublish": "in-publish && npm run -s build || in-install"
@@ -37,5 +46,9 @@
   "bugs": {
     "url": "https://github.com/sullenor/css-modules-require-hook/issues"
   },
-  "homepage": "https://github.com/sullenor/css-modules-require-hook"
+  "homepage": "https://github.com/sullenor/css-modules-require-hook",
+  "pre-commit": [
+    "lint",
+    "test"
+  ]
 }
