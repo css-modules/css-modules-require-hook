@@ -48,7 +48,6 @@
   },
   "homepage": "https://github.com/sullenor/css-modules-require-hook",
   "pre-commit": [
-    "lint",
     "test"
   ]
 }
