@@ -1,11 +1,9 @@
-'use strict';
-
 /**
  * @param {function} compile
  */
-module.exports = function (compile) {
-  require.extensions['.css'] = function (m, filename) {
-    var tokens = compile(filename);
+export default function attachHook(compile) {
+  require.extensions['.css'] = function hook(m, filename) {
+    const tokens = compile(filename);
     return m._compile('module.exports = ' + JSON.stringify(tokens), filename);
   };
-};
+}

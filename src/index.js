@@ -1,9 +1,7 @@
-'use strict';
-
 import './guard';
 import hook from './hook';
 import postcss from 'postcss';
-import { basename, dirname, join, relative, resolve } from 'path';
+import { dirname, join, relative, resolve } from 'path';
 import { readFileSync } from 'fs';
 
 import ExtractImports from 'postcss-modules-extract-imports';
@@ -22,7 +20,7 @@ let rootDir;
  * @return {object}
  */
 function load(sourceString, sourcePath, trace, pathFetcher) {
-  let result = postcss(plugins.concat(new Parser({ pathFetcher, trace })))
+  const result = postcss(plugins.concat(new Parser({ pathFetcher, trace })))
     .process(sourceString, {from: sourcePath})
     .root;
 
@@ -35,25 +33,25 @@ hook(filename => {
   let importNr = 0;
 
   const fetch = (_newPath, _relativeTo, _trace) => {
-    let newPath = _newPath.replace(/^["']|["']$/g, '');
-    let trace = _trace || String.fromCharCode(importNr++);
+    const newPath = _newPath.replace(/^["']|["']$/g, '');
+    const trace = _trace || String.fromCharCode(importNr++);
 
-    let relativeDir = dirname(_relativeTo);
-    let rootRelativePath = resolve(relativeDir, newPath);
-    let fileRelativePath = resolve(join(root, relativeDir), newPath);
+    const relativeDir = dirname(_relativeTo);
+    const rootRelativePath = resolve(relativeDir, newPath);
+    const fileRelativePath = resolve(join(root, relativeDir), newPath);
 
     const tokens = tokensByFile[fileRelativePath];
     if (tokens) {
       return tokens;
     }
 
-    let source = readFileSync(fileRelativePath, 'utf-8');
-    let exportTokens = load(source, rootRelativePath, trace, fetch);
+    const source = readFileSync(fileRelativePath, 'utf-8');
+    const exportTokens = load(source, rootRelativePath, trace, fetch);
 
     tokensByFile[fileRelativePath] = exportTokens;
 
     return exportTokens;
-  }
+  };
 
   return fetch(relative(root, filename), '/');
 });
@@ -63,10 +61,8 @@ hook(filename => {
  * @param  {array}  opts.u
  * @param  {array}  opts.use
  */
-export default function configure(opts) {
-  opts = opts || {};
-
-  let customPlugins = opts.u || opts.use;
+export default function configure(opts = {}) {
+  const customPlugins = opts.u || opts.use;
   plugins = Array.isArray(customPlugins)
     ? customPlugins
     : [LocalByDefault, ExtractImports, Scope];

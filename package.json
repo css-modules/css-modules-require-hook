@@ -24,7 +24,7 @@
   "scripts": {
     "start": "esw -w .",
     "lint": "eslint .",
-    "pretest": "npm run -s lint || true",
+    "pretest": "npm run -s lint",
     "test": "npm run -s build && mocha --compilers js:babel/register",
     "build": "babel src --out-dir dist",
     "prepublish": "in-publish && npm run -s build || in-install"

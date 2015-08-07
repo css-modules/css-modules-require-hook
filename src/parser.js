@@ -1,19 +1,15 @@
-'use strict';
-
 import { plugin } from 'postcss';
 
-const importRegexp = /^:import\((.+)\)$/
+const importRegexp = /^:import\((.+)\)$/;
 
-export default plugin('parser', function (opts) {
-  opts = opts || {};
-
-  let exportTokens = {};
-  let translations = {};
+export default plugin('parser', function parser(opts = {}) {
+  const exportTokens = {};
+  const translations = {};
 
   const fetchImport = (importNode, relativeTo, depNr) => {
-    let file = importNode.selector.match( importRegexp )[1];
-    let depTrace = opts.trace + String.fromCharCode(depNr);
-    let exports = opts.pathFetcher(file, relativeTo, depTrace);
+    const file = importNode.selector.match(importRegexp)[1];
+    const depTrace = opts.trace + String.fromCharCode(depNr);
+    const exports = opts.pathFetcher(file, relativeTo, depTrace);
 
     importNode.each(decl => {
       if (decl.type === 'decl') {
@@ -22,7 +18,7 @@ export default plugin('parser', function (opts) {
     });
 
     importNode.removeSelf();
-  }
+  };
 
   const fetchAllImports = css => {
     let imports = 0;
@@ -32,11 +28,11 @@ export default plugin('parser', function (opts) {
         fetchImport(node, css.source.input.from, imports++);
       }
     });
-  }
+  };
 
   const linkImportedSymbols = css => css.eachDecl(decl => {
     Object.keys(translations).forEach(translation => {
-      decl.value = decl.value.replace(translation, translations[translation])
+      decl.value = decl.value.replace(translation, translations[translation]);
     });
   });
 
@@ -44,7 +40,7 @@ export default plugin('parser', function (opts) {
     exportNode.each(decl => {
       if (decl.type === 'decl') {
         Object.keys(translations).forEach(translation => {
-          decl.value = decl.value.replace(translation, translations[translation])
+          decl.value = decl.value.replace(translation, translations[translation]);
         });
 
         exportTokens[decl.prop] = decl.value;
@@ -52,7 +48,7 @@ export default plugin('parser', function (opts) {
     });
 
     exportNode.removeSelf();
-  }
+  };
 
   const extractExports = css => css.each(node => {
     if (node.type === 'rule' && node.selector === ':export') handleExport(node);
@@ -63,5 +59,5 @@ export default plugin('parser', function (opts) {
     linkImportedSymbols(css);
     extractExports(css);
     css.tokens = exportTokens;
-  }
+  };
 });
