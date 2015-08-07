@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { equal } from 'assert';
 
-import hook from '../';
+import hook from '../src';
 
 const pipelines = {
   'test-cases': undefined,
