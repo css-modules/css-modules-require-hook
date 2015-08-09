@@ -14,6 +14,10 @@
     "in-publish": "^2.0.0",
     "isparta": "^3.0.3",
     "mocha": "^2.2.5",
+    "postcss": "4.x",
+    "postcss-modules-extract-imports": "0.x",
+    "postcss-modules-local-by-default": "0.x",
+    "postcss-modules-scope": "0.x",
     "precommit-hook": "^3.0.0"
   },
   "peerDependencies": {
