@@ -9,9 +9,10 @@ import LocalByDefault from 'postcss-modules-local-by-default';
 import Scope from 'postcss-modules-scope';
 import Parser from './parser';
 
+const defaultRoot = process.cwd();
 const tokensByFile = {};
 let plugins = [LocalByDefault, ExtractImports, Scope];
-let rootDir;
+let root = defaultRoot;
 
 /**
  * @param  {string}   sourceString The file content
@@ -29,7 +30,6 @@ function load(sourceString, sourcePath, trace, pathFetcher) {
 }
 
 hook(filename => {
-  const root = rootDir || dirname(filename);
   let importNr = 0;
 
   const fetch = (_newPath, _relativeTo, _trace) => {
@@ -67,7 +67,7 @@ export default function configure(opts = {}) {
     ? customPlugins
     : [LocalByDefault, ExtractImports, Scope];
 
-  if (opts.root && typeof opts.root === 'string') {
-    rootDir = opts.root;
-  }
+  root = opts.root && typeof opts.root === 'string'
+    ? opts.root
+    : defaultRoot;
 }
