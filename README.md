@@ -5,6 +5,15 @@ Automatically compiles a CSS Module to a low-level interchange format called ICS
 
 One of the ways you can compile [CSS Modules](https://github.com/css-modules/css-modules) to the ICSS format is through the require hook. The require hook will bind itself to node's require and automatically compile files on the fly. This is similar to Babel's [babel/register](https://babeljs.io/docs/usage/require/).
 
+## Requirements
+
+To use this tool we require postcss and few plugins to be installed on your project. See the list below:
+
+- `"postcss": "4.x"`
+- `"postcss-modules-extract-imports": "0.x"`
+- `"postcss-modules-local-by-default": "0.x"`
+- `"postcss-modules-scope": "0.x"`
+
 ## Install
 
 ```bash
