@@ -3,12 +3,6 @@
   "version": "1.0.1",
   "description": "A require hook to compile CSS Modules on the fly",
   "main": "index.js",
-  "dependencies": {
-    "postcss": "^4.1.16",
-    "postcss-modules-extract-imports": "0.0.5",
-    "postcss-modules-local-by-default": "0.0.9",
-    "postcss-modules-scope": "0.0.8"
-  },
   "devDependencies": {
     "babel": "^5.8.20",
     "babel-eslint": "^4.0.5",
@@ -21,6 +15,12 @@
     "isparta": "^3.0.3",
     "mocha": "^2.2.5",
     "precommit-hook": "^3.0.0"
+  },
+  "peerDependencies": {
+    "postcss": "4.x",
+    "postcss-modules-extract-imports": "0.x",
+    "postcss-modules-local-by-default": "0.x",
+    "postcss-modules-scope": "0.x"
   },
   "scripts": {
     "start": "esw -w .",
