@@ -1,6 +1,6 @@
 {
   "name": "css-modules-require-hook",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A require hook to compile CSS Modules on the fly",
   "main": "index.js",
   "engines": {
@@ -40,7 +40,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sullenor/css-modules-require-hook.git"
+    "url": "https://github.com/css-modules/css-modules-require-hook.git"
   },
   "keywords": [
     "css-modules",
@@ -53,9 +53,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sullenor/css-modules-require-hook/issues"
+    "url": "https://github.com/css-modules/css-modules-require-hook/issues"
   },
-  "homepage": "https://github.com/sullenor/css-modules-require-hook",
+  "homepage": "https://github.com/css-modules/css-modules-require-hook",
   "pre-commit": [
     "test"
   ]
