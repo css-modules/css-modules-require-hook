@@ -14,4 +14,13 @@ describe('css-modules-require-hook', () => {
       equal(JSON.stringify(expectedTokens), JSON.stringify(tokens));
     });
   });
+
+  describe('non-relative imports', () => {
+    it('should resolve to node_modules', () => {
+      const expectedTokens = JSON.parse(readFileSync(join(__dirname, './cases/non-relative-imports/expected.json'), 'utf8'));
+      const tokens = require('./cases/non-relative-imports/source.css');
+
+      equal(JSON.stringify(expectedTokens), JSON.stringify(tokens));
+    });
+  });
 });

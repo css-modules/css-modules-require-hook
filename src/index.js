@@ -1,7 +1,7 @@
 import './guard';
 import hook from './hook';
 import postcss from 'postcss';
-import { dirname, join, relative, resolve } from 'path';
+import { dirname, join, parse, relative, resolve, sep } from 'path';
 import { readFileSync } from 'fs';
 
 import ExtractImports from 'postcss-modules-extract-imports';
@@ -9,10 +9,23 @@ import LocalByDefault from 'postcss-modules-local-by-default';
 import Scope from 'postcss-modules-scope';
 import Parser from './parser';
 
+const escapedSeparator = sep.replace(/(.)/g, '\\$1');
+const relativePathPattern = new RegExp(`^.{1,2}$|^.{1,2}${escapedSeparator}`);
+
 const defaultRoot = process.cwd();
 const tokensByFile = {};
 let plugins = [LocalByDefault, ExtractImports, Scope];
 let root = defaultRoot;
+let importNr = 0;
+
+/**
+ * @param  {string}  pathname
+ * @return {boolean}
+ */
+function isModule(pathname) {
+  const parsed = parse(pathname);
+  return !parsed.root && !relativePathPattern.test(parsed.dir);
+}
 
 /**
  * @param  {string}   sourceString The file content
@@ -29,32 +42,38 @@ function load(sourceString, sourcePath, trace, pathFetcher) {
   return result.tokens;
 }
 
-hook(filename => {
-  let importNr = 0;
+/**
+ * @param  {string} _newPath
+ * @param  {string} _relativeTo
+ * @param  {string} _trace
+ * @return {object}
+ */
+function fetch(_newPath, _relativeTo, _trace) {
+  const newPath = _newPath.replace(/^["']|["']$/g, '');
+  const trace = _trace || String.fromCharCode(importNr++);
 
-  const fetch = (_newPath, _relativeTo, _trace) => {
-    const newPath = _newPath.replace(/^["']|["']$/g, '');
-    const trace = _trace || String.fromCharCode(importNr++);
+  const relativeDir = dirname(_relativeTo);
+  const rootRelativePath = resolve(relativeDir, newPath);
+  let fileRelativePath = resolve(join(root, relativeDir), newPath);
 
-    const relativeDir = dirname(_relativeTo);
-    const rootRelativePath = resolve(relativeDir, newPath);
-    const fileRelativePath = resolve(join(root, relativeDir), newPath);
+  if (isModule(newPath)) {
+    fileRelativePath = require.resolve(newPath);
+  }
 
-    const tokens = tokensByFile[fileRelativePath];
-    if (tokens) {
-      return tokens;
-    }
+  const tokens = tokensByFile[fileRelativePath];
+  if (tokens) {
+    return tokens;
+  }
 
-    const source = readFileSync(fileRelativePath, 'utf-8');
-    const exportTokens = load(source, rootRelativePath, trace, fetch);
+  const source = readFileSync(fileRelativePath, 'utf-8');
+  const exportTokens = load(source, rootRelativePath, trace, fetch);
 
-    tokensByFile[fileRelativePath] = exportTokens;
+  tokensByFile[fileRelativePath] = exportTokens;
 
-    return exportTokens;
-  };
+  return exportTokens;
+}
 
-  return fetch(relative(root, filename), '/');
-});
+hook(filename => fetch(`.${sep}${relative(root, filename)}`, '/'));
 
 /**
  * @param  {object} opts
