@@ -30,6 +30,10 @@ require('css-modules-require-hook');
 
 ```javascript
 require('css-modules-require-hook')({
+  // If you run css-modulesify and require-hook from different directories,
+  // you have to specify similar root directories
+  // in order to get the same class names
+  root: '...', // please, use the absolute path here. It's process.cwd() by default
   // Setting this allows you to specify custom PostCSS plugins
   // You may use functions or strings, which match to the modules with the same name
   use: [] // may use `u` for short
