@@ -35,11 +35,10 @@ function isModule(pathname) {
  * @return {object}
  */
 function load(sourceString, sourcePath, trace, pathFetcher) {
-  const result = postcss(plugins.concat(new Parser({ pathFetcher, trace })))
-    .process(sourceString, {from: sourcePath})
-    .root;
+  const lazyResult = postcss(plugins.concat(new Parser({ pathFetcher, trace })))
+    .process(sourceString, {from: sourcePath});
 
-  return result.tokens;
+  return { injectableSource: lazyResult.css, exportTokens: lazyResult.root.tokens };;
 }
 
 /**
@@ -66,7 +65,7 @@ function fetch(_newPath, _relativeTo, _trace) {
   }
 
   const source = readFileSync(fileRelativePath, 'utf-8');
-  const exportTokens = load(source, rootRelativePath, trace, fetch);
+  const { exportTokens, injectableSource } = load(source, rootRelativePath, trace, fetch);
 
   tokensByFile[fileRelativePath] = exportTokens;
 
