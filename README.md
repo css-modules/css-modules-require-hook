@@ -26,16 +26,55 @@ $ npm i css-modules-require-hook
 require('css-modules-require-hook');
 ```
 
-## Specifying options
+## Available options
+
+Providing additional options allows you to get advanced experience. See the variants below.
 
 ```javascript
-require('css-modules-require-hook')({
-  // If you run css-modulesify and require-hook from different directories,
-  // you have to specify similar root directories
-  // in order to get the same class names
-  root: '...', // please, use the absolute path here. It's process.cwd() by default
-  // Setting this allows you to specify custom PostCSS plugins
-  // You may use functions or strings, which match to the modules with the same name
-  use: [] // may use `u` for short
+var hook = require('css-modules-require-hook');
+hook({ /* options */ });
+```
+
+### `rootDir` option
+
+Aliases are `root`, `d`.
+
+Absolute path to your project's root directory. This is optional but providing it will result in better generated classnames. It can be obligatory, if you run require hook and build tools, like [css-modulesify](https://github.com/css-modules/css-modulesify) from different working directories.
+
+### `use` option
+
+Alias is `u`.
+
+Custom list of plugins. This is optional but helps you to extend list of basic [postcss](https://github.com/postcss/postcss) plugins. Also helps to specify options for particular plugins.
+
+### `createImportedName` option
+
+Alias for the `createImportedName` option from the [postcss-modules-extract-imports](https://github.com/css-modules/postcss-modules-extract-imports) plugin. This is optional. Won't work if you `use` option.
+
+### `generateScopedName` option
+
+Custom function to generate class names. This is optional. Alias for the `generateScopedName` option from the [postcss-modules-scope](https://github.com/css-modules/postcss-modules-scope) plugin. Won't work if you `use` option.
+
+### `mode` option
+
+Alias for the `mode` option from the [postcss-modules-local-by-default](https://github.com/css-modules/postcss-modules-local-by-default) plugin. This is optional. Won't work if you `use` option.
+
+## Examples
+
+If you want to add custom functionality, for example [CSS Next](http://cssnext.io/setup/#as-a-postcss-plugin) plugin, you should provide the `use` option.
+
+```javascript
+var hook = require('css-modules-require-hook');
+
+hook({
+  use: [
+    // adding CSS Next plugin
+    require('cssnext')(),
+
+    // adding basic css-modules plugins
+    require('postcss-modules-extract-imports'),
+    require('postcss-modules-local-by-default'),
+    require('postcss-modules-scope')
+  ]
 });
 ```
