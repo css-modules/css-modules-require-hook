@@ -3,20 +3,83 @@ import hook from './hook';
 import postcss from 'postcss';
 import { dirname, join, parse, relative, resolve, sep } from 'path';
 import { readFileSync } from 'fs';
+import isPlainObject from 'lodash.isplainobject';
 
 import ExtractImports from 'postcss-modules-extract-imports';
 import LocalByDefault from 'postcss-modules-local-by-default';
 import Scope from 'postcss-modules-scope';
 import Parser from './parser';
 
+let processCss;
+let rootDir;
+let plugins;
+
+/**
+ * @param  {object}   opts
+ * @param  {function} opts.generateScopedName
+ * @param  {function} opts.processCss|.p
+ * @param  {string}   opts.rootDir|.root|.d
+ * @param  {array}    opts.use|.u
+ */
+export default function buildOptions(opts = {}) {
+  if (!isPlainObject(opts)) {
+    throw new Error('Use plain object');
+  }
+
+  processCss = get(opts, 'processCss|p');
+  rootDir = get(opts, 'rootDir|root|d');
+  rootDir = rootDir ? resolve(rootDir) : process.cwd();
+
+  const customPlugins = get(opts, 'use|u');
+  if (Array.isArray(customPlugins)) {
+    return void (plugins = customPlugins);
+  }
+
+  plugins = [];
+
+  plugins.push(
+    opts.mode
+      ? new LocalByDefault({mode: opts.mode})
+      : LocalByDefault
+  );
+
+  plugins.push(
+    opts.createImportedName
+      ? new ExtractImports({createImportedName: opts.createImportedName})
+      : ExtractImports
+  );
+
+  plugins.push(
+    opts.generateScopedName
+      ? new Scope({generateScopedName: opts.generateScopedName})
+      : Scope
+  );
+}
+
 const escapedSeparator = sep.replace(/(.)/g, '\\$1');
 const relativePathPattern = new RegExp(`^.{1,2}$|^.{1,2}${escapedSeparator}`);
-
-const defaultRoot = process.cwd();
 const tokensByFile = {};
-let plugins = [LocalByDefault, ExtractImports, Scope];
-let root = defaultRoot;
 let importNr = 0;
+
+/**
+ * @param  {object} object
+ * @param  {string} keys 'a|b|c'
+ * @return {*}
+ */
+function get(object, keys) {
+  let key;
+
+  keys.split('|').some(k => {
+    if (!object[k]) {
+      return false;
+    }
+
+    key = k;
+    return true;
+  });
+
+  return key ? object[key] : null;
+}
 
 /**
  * @param  {string}  pathname
@@ -35,11 +98,10 @@ function isModule(pathname) {
  * @return {object}
  */
 function load(sourceString, sourcePath, trace, pathFetcher) {
-  const result = postcss(plugins.concat(new Parser({ pathFetcher, trace })))
-    .process(sourceString, {from: sourcePath})
-    .root;
+  const lazyResult = postcss(plugins.concat(new Parser({ pathFetcher, trace })))
+    .process(sourceString, {from: sourcePath});
 
-  return result.tokens;
+  return { injectableSource: lazyResult.css, exportTokens: lazyResult.root.tokens };
 }
 
 /**
@@ -54,7 +116,7 @@ function fetch(_newPath, _relativeTo, _trace) {
 
   const relativeDir = dirname(_relativeTo);
   const rootRelativePath = resolve(relativeDir, newPath);
-  let fileRelativePath = resolve(join(root, relativeDir), newPath);
+  let fileRelativePath = resolve(join(rootDir, relativeDir), newPath);
 
   if (isModule(newPath)) {
     fileRelativePath = require.resolve(newPath);
@@ -66,27 +128,18 @@ function fetch(_newPath, _relativeTo, _trace) {
   }
 
   const source = readFileSync(fileRelativePath, 'utf-8');
-  const exportTokens = load(source, rootRelativePath, trace, fetch);
+  const { exportTokens, injectableSource } = load(source, rootRelativePath, trace, fetch);
 
   tokensByFile[fileRelativePath] = exportTokens;
+
+  if (typeof processCss === 'function') {
+    processCss(injectableSource);
+  }
 
   return exportTokens;
 }
 
-hook(filename => fetch(`.${sep}${relative(root, filename)}`, '/'));
+// setting defaults
+buildOptions();
 
-/**
- * @param  {object} opts
- * @param  {array}  opts.u
- * @param  {array}  opts.use
- */
-export default function configure(opts = {}) {
-  const customPlugins = opts.u || opts.use;
-  plugins = Array.isArray(customPlugins)
-    ? customPlugins
-    : [LocalByDefault, ExtractImports, Scope];
-
-  root = opts.root && typeof opts.root === 'string'
-    ? opts.root
-    : defaultRoot;
-}
+hook(filename => fetch(`.${sep}${relative(rootDir, filename)}`, '/'));

@@ -5,5 +5,6 @@
     "mocha": true
   },
   "rules": {
+    "no-use-before-define": [2, "nofunc"]
   }
 }

@@ -6,6 +6,9 @@
   "engines": {
     "node": ">=0.12"
   },
+  "dependencies": {
+    "lodash.isplainobject": "^3.2.0"
+  },
   "devDependencies": {
     "babel": "^5.8.20",
     "babel-eslint": "^4.0.5",
