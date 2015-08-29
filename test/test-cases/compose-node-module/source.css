@@ -1,0 +1,3 @@
+.foo {
+  composes: color from "awesome-theme/oceanic.css";
+}
