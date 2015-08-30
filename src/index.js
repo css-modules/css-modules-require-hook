@@ -8,6 +8,7 @@ import LocalByDefault from 'postcss-modules-local-by-default';
 import Scope from 'postcss-modules-scope';
 import Parser from './parser';
 
+let importNr = 0;
 let plugins = [ExtractImports, LocalByDefault, Scope];
 let rootDir = process.cwd();
 
@@ -16,15 +17,16 @@ export default function (opts = {}) {
   rootDir = opts.rootDir ? opts.rootDir : process.cwd();
 }
 
-function pathFetcher(_newPath, sourcePath, trace) {
+function pathFetcher(_newPath, sourcePath, _trace) {
+  const trace = _trace || String.fromCharCode(importNr++);
   const newPath = _newPath.replace(/^["']|["']$/g, '');
   const filename = /\w/.test(newPath[0])
     ? require.resolve(newPath)
     : resolve(rootDir + dirname(sourcePath), newPath);
   const rootRelativePath = sep + relative(rootDir, filename);
-  const source = readFileSync(filename, 'utf-8');
+  const source = readFileSync(filename, 'utf8');
 
-  const result = postcss(plugins.concat(new Parser({ pathFetcher })))
+  const result = postcss(plugins.concat(new Parser({ pathFetcher, trace })))
     // preprocess
     .process(source, {from: rootRelativePath})
     .root;

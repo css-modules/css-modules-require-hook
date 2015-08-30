@@ -25,7 +25,7 @@ describe('common-test-cases', () => {
         hook({rootDir: resolve('test/test-cases'), use: pipelines['test-cases']});
       });
 
-      it('loader-core', done => {
+      it.skip('loader-core', done => {
         const loader = new FileSystemLoader(resolve('test/test-cases'), pipelines['test-cases']);
 
         loader.fetch('compose-node-module/source.css', '/')
