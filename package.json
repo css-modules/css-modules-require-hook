@@ -38,6 +38,7 @@
     "pretest": "npm run -s lint",
     "test": "mocha --compilers js:babel/register",
     "test:cov": "`npm bin`/babel-node `npm bin`/isparta cover --report text --report html `npm bin`/_mocha",
+    "test:gen": "babel-node generate-tests",
     "build": "babel src --out-dir dist",
     "prepublish": "in-publish && npm run -s build || in-install"
   },

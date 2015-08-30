@@ -13,7 +13,7 @@ let rootDir = process.cwd();
 
 export default function (opts = {}) {
   plugins = opts.use ? opts.use : [ExtractImports, LocalByDefault, Scope];
-  rootDir = opts.root ? opts.root : process.cwd();
+  rootDir = opts.rootDir ? opts.rootDir : process.cwd();
 }
 
 function pathFetcher(_newPath, sourcePath, trace) {
