@@ -20,7 +20,7 @@ let plugins = [LocalByDefault, ExtractImports, Scope];
 let rootDir = process.cwd();
 
 /**
- * @param  {object} opts
+ * @param  {object}   opts
  * @param  {function} opts.createImportedName
  * @param  {function} opts.generateScopedName
  * @param  {function} opts.processCss

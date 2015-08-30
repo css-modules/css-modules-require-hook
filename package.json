@@ -6,9 +6,6 @@
   "engines": {
     "node": ">=0.12"
   },
-  "dependencies": {
-    "lodash.isplainobject": "^3.2.0"
-  },
   "devDependencies": {
     "babel": "^5.8.20",
     "babel-eslint": "^4.0.5",
@@ -19,6 +16,7 @@
     "eslint-watch": "^1.2.4",
     "in-publish": "^2.0.0",
     "isparta": "^3.0.3",
+    "lodash": "^3.10.1",
     "mocha": "^2.2.5",
     "postcss": "4.x",
     "postcss-modules-extract-imports": "0.x",
