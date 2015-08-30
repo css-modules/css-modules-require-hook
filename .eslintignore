@@ -1,3 +1,6 @@
 dist
 coverage
 node_modules
+
+generate-tests.js
+test/common-test-cases.js

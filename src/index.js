@@ -1,145 +1,125 @@
-import './guard';
 import hook from './hook';
-import postcss from 'postcss';
-import { dirname, join, parse, relative, resolve, sep } from 'path';
 import { readFileSync } from 'fs';
-import isPlainObject from 'lodash.isplainobject';
+import { dirname, sep, relative, resolve } from 'path';
+import { identity, removeQuotes } from './fn';
+import postcss from 'postcss';
 
 import ExtractImports from 'postcss-modules-extract-imports';
 import LocalByDefault from 'postcss-modules-local-by-default';
 import Scope from 'postcss-modules-scope';
 import Parser from './parser';
 
-let processCss;
-let rootDir;
-let plugins;
+// cache
+let importNr = 0;
+let tokensByFile = {};
+// processing functions
+const preProcess = identity;
+let postProcess;
+// defaults
+let plugins = [LocalByDefault, ExtractImports, Scope];
+let rootDir = process.cwd();
 
 /**
- * @param  {object}   opts
+ * @param  {object} opts
+ * @param  {function} opts.createImportedName
  * @param  {function} opts.generateScopedName
- * @param  {function} opts.processCss|.p
- * @param  {string}   opts.rootDir|.root|.d
- * @param  {array}    opts.use|.u
+ * @param  {function} opts.processCss
+ * @param  {string}   opts.rootDir
+ * @param  {array}    opts.use
  */
-export default function buildOptions(opts = {}) {
-  if (!isPlainObject(opts)) {
-    throw new Error('Use plain object');
+export default function setup(opts = {}) {
+  // clearing cache
+  importNr = 0;
+  tokensByFile = {};
+
+  if (opts.processCss && typeof opts.processCss !== 'function') {
+    throw new Error('should specify function for processCss');
   }
 
-  processCss = get(opts, 'processCss|p');
-  rootDir = get(opts, 'rootDir|root|d');
-  rootDir = rootDir ? resolve(rootDir) : process.cwd();
+  postProcess = opts.processCss || null;
 
-  const customPlugins = get(opts, 'use|u');
-  if (Array.isArray(customPlugins)) {
-    return void (plugins = customPlugins);
+  if (opts.rootDir && typeof opts.rootDir !== 'string') {
+    throw new Error('should specify string for rootDir');
+  }
+
+  rootDir = opts.rootDir || process.cwd();
+
+  if (opts.use) {
+    if (!Array.isArray(opts.use)) {
+      throw new Error('should specify array for use');
+    }
+
+    return void (plugins = opts.use);
   }
 
   plugins = [];
 
-  plugins.push(
-    opts.mode
-      ? new LocalByDefault({mode: opts.mode})
-      : LocalByDefault
-  );
-
-  plugins.push(
-    opts.createImportedName
-      ? new ExtractImports({createImportedName: opts.createImportedName})
-      : ExtractImports
-  );
-
-  plugins.push(
-    opts.generateScopedName
-      ? new Scope({generateScopedName: opts.generateScopedName})
-      : Scope
-  );
-}
-
-const escapedSeparator = sep.replace(/(.)/g, '\\$1');
-const relativePathPattern = new RegExp(`^.{1,2}$|^.{1,2}${escapedSeparator}`);
-const tokensByFile = {};
-let importNr = 0;
-
-/**
- * @param  {object} object
- * @param  {string} keys 'a|b|c'
- * @return {*}
- */
-function get(object, keys) {
-  let key;
-
-  keys.split('|').some(k => {
-    if (!object[k]) {
-      return false;
+  if (opts.mode) {
+    if (typeof opts.mode !== 'string') {
+      throw new Error('should specify string for mode');
     }
 
-    key = k;
-    return true;
-  });
+    plugins.push(new LocalByDefault({mode: opts.mode}));
+  } else {
+    plugins.push(LocalByDefault);
+  }
 
-  return key ? object[key] : null;
+  if (opts.createImportedName) {
+    if (typeof opts.createImportedName !== 'function') {
+      throw new Error('should specify function for createImportedName');
+    }
+
+    plugins.push(new ExtractImports({createImportedName: opts.createImportedName}));
+  } else {
+    plugins.push(ExtractImports);
+  }
+
+  if (opts.generateScopedName) {
+    if (typeof opts.generateScopedName !== 'function') {
+      throw new Error('should specify function for generateScopedName');
+    }
+
+    plugins.push(new Scope({generateScopedName: opts.generateScopedName}));
+  } else {
+    plugins.push(Scope);
+  }
 }
 
 /**
- * @param  {string}  pathname
- * @return {boolean}
- */
-function isModule(pathname) {
-  const parsed = parse(pathname);
-  return !parsed.root && !relativePathPattern.test(parsed.dir);
-}
-
-/**
- * @param  {string}   sourceString The file content
- * @param  {string}   sourcePath
- * @param  {string}   trace
- * @param  {function} pathFetcher
- * @return {object}
- */
-function load(sourceString, sourcePath, trace, pathFetcher) {
-  const lazyResult = postcss(plugins.concat(new Parser({ pathFetcher, trace })))
-    .process(sourceString, {from: sourcePath});
-
-  return { injectableSource: lazyResult.css, exportTokens: lazyResult.root.tokens };
-}
-
-/**
- * @param  {string} _newPath
- * @param  {string} _relativeTo
+ * @param  {string} _newPath    Absolute or relative path. Also can be path to the Node.JS module.
+ * @param  {string} _sourcePath Absolute path (relative to root).
  * @param  {string} _trace
  * @return {object}
  */
-function fetch(_newPath, _relativeTo, _trace) {
-  const newPath = _newPath.replace(/^["']|["']$/g, '');
+function fetch(_newPath, _sourcePath, _trace) {
   const trace = _trace || String.fromCharCode(importNr++);
+  const newPath = removeQuotes(_newPath);
+  // getting absolute path to the processing file
+  const filename = /\w/.test(newPath[0])
+    ? require.resolve(newPath)
+    : resolve(rootDir + dirname(_sourcePath), newPath);
 
-  const relativeDir = dirname(_relativeTo);
-  const rootRelativePath = resolve(relativeDir, newPath);
-  let fileRelativePath = resolve(join(rootDir, relativeDir), newPath);
-
-  if (isModule(newPath)) {
-    fileRelativePath = require.resolve(newPath);
-  }
-
-  const tokens = tokensByFile[fileRelativePath];
+  // checking cache
+  let tokens = tokensByFile[filename];
   if (tokens) {
     return tokens;
   }
 
-  const source = readFileSync(fileRelativePath, 'utf-8');
-  const { exportTokens, injectableSource } = load(source, rootRelativePath, trace, fetch);
+  const rootRelativePath = sep + relative(rootDir, filename);
+  const CSSSource = preProcess(readFileSync(filename, 'utf8'));
 
-  tokensByFile[fileRelativePath] = exportTokens;
+  const result = postcss(plugins.concat(new Parser({ fetch, trace })))
+    .process(CSSSource, {from: rootRelativePath})
+    .root;
 
-  if (typeof processCss === 'function') {
-    processCss(injectableSource);
+  tokens = result.tokens;
+  tokensByFile[filename] = tokens;
+
+  if (postProcess) {
+    postProcess(result.toResult().css);
   }
 
-  return exportTokens;
+  return tokens;
 }
 
-// setting defaults
-buildOptions();
-
-hook(filename => fetch(`.${sep}${relative(rootDir, filename)}`, '/'));
+hook(filename => fetch(filename, sep + relative(rootDir, filename)));
