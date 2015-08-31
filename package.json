@@ -7,7 +7,12 @@
     "node": ">=0.12"
   },
   "dependencies": {
-    "lodash.isplainobject": "^3.2.0"
+    "lodash.assign": "^3.2.0",
+    "lodash.identity": "^3.0.0",
+    "lodash.isarray": "^3.0.4",
+    "lodash.isfunction": "^3.0.6",
+    "lodash.isstring": "^3.0.1",
+    "lodash.pick": "^3.1.0"
   },
   "devDependencies": {
     "babel": "^5.8.20",
@@ -19,6 +24,7 @@
     "eslint-watch": "^1.2.4",
     "in-publish": "^2.0.0",
     "isparta": "^3.0.3",
+    "lodash": "^3.10.1",
     "mocha": "^2.2.5",
     "postcss": "4.x",
     "postcss-modules-extract-imports": "0.x",
