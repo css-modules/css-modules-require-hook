@@ -27,10 +27,10 @@
     "precommit-hook": "^3.0.0"
   },
   "peerDependencies": {
-    "postcss": "4.x",
-    "postcss-modules-extract-imports": "0.x",
-    "postcss-modules-local-by-default": "0.x",
-    "postcss-modules-scope": "0.x"
+    "postcss": ">=4.x",
+    "postcss-modules-extract-imports": ">=0.x",
+    "postcss-modules-local-by-default": ">=0.x",
+    "postcss-modules-scope": ">=0.x"
   },
   "scripts": {
     "start": "esw -w .",
