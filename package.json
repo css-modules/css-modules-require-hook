@@ -6,6 +6,12 @@
   "engines": {
     "node": ">=0.12"
   },
+  "dependencies": {
+    "lodash.identity": "^3.0.0",
+    "lodash.isarray": "^3.0.4",
+    "lodash.isfunction": "^3.0.6",
+    "lodash.isstring": "^3.0.1"
+  },
   "devDependencies": {
     "babel": "^5.8.20",
     "babel-eslint": "^4.0.5",

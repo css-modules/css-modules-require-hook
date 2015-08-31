@@ -1,7 +1,8 @@
 import hook from './hook';
 import { readFileSync } from 'fs';
 import { dirname, sep, relative, resolve } from 'path';
-import { identity, removeQuotes } from './fn';
+import { get, removeQuotes } from './utility';
+import identity from 'lodash.identity';
 import postcss from 'postcss';
 
 import ExtractImports from 'postcss-modules-extract-imports';
@@ -32,57 +33,30 @@ export default function setup(opts = {}) {
   importNr = 0;
   tokensByFile = {};
 
-  if (opts.processCss && typeof opts.processCss !== 'function') {
-    throw new Error('should specify function for processCss');
-  }
+  postProcess = get('processCss', null, 'function', opts) || null;
+  rootDir = get('rootDir', ['root', 'd'], 'string', opts) || process.cwd();
 
-  postProcess = opts.processCss || null;
-
-  if (opts.rootDir && typeof opts.rootDir !== 'string') {
-    throw new Error('should specify string for rootDir');
-  }
-
-  rootDir = opts.rootDir || process.cwd();
-
-  if (opts.use) {
-    if (!Array.isArray(opts.use)) {
-      throw new Error('should specify array for use');
-    }
-
-    return void (plugins = opts.use);
+  const customPlugins = get('use', ['u'], 'array', opts);
+  if (customPlugins) {
+    return void (plugins = customPlugins);
   }
 
   plugins = [];
 
-  if (opts.mode) {
-    if (typeof opts.mode !== 'string') {
-      throw new Error('should specify string for mode');
-    }
+  const mode = get('mode', null, 'string', opts);
+  plugins.push(mode
+    ? new LocalByDefault({mode: opts.mode})
+    : LocalByDefault);
 
-    plugins.push(new LocalByDefault({mode: opts.mode}));
-  } else {
-    plugins.push(LocalByDefault);
-  }
+  const createImportedName = get('createImportedName', null, 'function', opts);
+  plugins.push(createImportedName
+    ? new ExtractImports({createImportedName: opts.createImportedName})
+    : ExtractImports);
 
-  if (opts.createImportedName) {
-    if (typeof opts.createImportedName !== 'function') {
-      throw new Error('should specify function for createImportedName');
-    }
-
-    plugins.push(new ExtractImports({createImportedName: opts.createImportedName}));
-  } else {
-    plugins.push(ExtractImports);
-  }
-
-  if (opts.generateScopedName) {
-    if (typeof opts.generateScopedName !== 'function') {
-      throw new Error('should specify function for generateScopedName');
-    }
-
-    plugins.push(new Scope({generateScopedName: opts.generateScopedName}));
-  } else {
-    plugins.push(Scope);
-  }
+  const generateScopedName = get('generateScopedName', null, 'function', opts);
+  plugins.push(generateScopedName
+    ? new Scope({generateScopedName: opts.generateScopedName})
+    : Scope);
 }
 
 /**
