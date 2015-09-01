@@ -66,18 +66,18 @@ export default function setup(opts = {}) {
 }
 
 /**
- * @param  {string} _newPath    Absolute or relative path. Also can be path to the Node.JS module.
- * @param  {string} _sourcePath Absolute path (relative to root).
+ * @param  {string} _to    Absolute or relative path. Also can be path to the Node.JS module.
+ * @param  {string} _from  Absolute path (relative to root).
  * @param  {string} _trace
  * @return {object}
  */
-function fetch(_newPath, _sourcePath, _trace) {
+function fetch(_to, _from, _trace) {
   const trace = _trace || String.fromCharCode(importNr++);
-  const newPath = removeQuotes(_newPath);
+  const newPath = removeQuotes(_to);
   // getting absolute path to the processing file
   const filename = /\w/.test(newPath[0])
     ? require.resolve(newPath)
-    : resolve(rootDir + dirname(_sourcePath), newPath);
+    : resolve(dirname(_from), newPath);
 
   // checking cache
   let tokens = tokensByFile[filename];
@@ -88,7 +88,7 @@ function fetch(_newPath, _sourcePath, _trace) {
   const rootRelativePath = sep + relative(rootDir, filename);
   const CSSSource = preProcess(readFileSync(filename, 'utf8'));
 
-  const result = postcss(plugins.concat(new Parser({ fetch, trace })))
+  const result = postcss(plugins.concat(new Parser({ fetch, filename, trace })))
     .process(CSSSource, assign(lazyResultOpts, {from: rootRelativePath}))
     .root;
 
@@ -102,4 +102,4 @@ function fetch(_newPath, _sourcePath, _trace) {
   return tokens;
 }
 
-hook(filename => fetch(filename, sep + relative(rootDir, filename)));
+hook(filename => fetch(filename, filename));
