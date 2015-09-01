@@ -9,7 +9,7 @@ export default plugin('parser', function parser(opts = {}) {
   const fetchImport = (importNode, relativeTo, depNr) => {
     const file = importNode.selector.match(importRegexp)[1];
     const depTrace = opts.trace + String.fromCharCode(depNr);
-    const exports = opts.fetch(file, relativeTo, depTrace);
+    const exports = opts.fetch(file, opts.filename, depTrace);
 
     importNode.each(decl => {
       if (decl.type === 'decl') {
