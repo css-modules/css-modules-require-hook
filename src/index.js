@@ -88,15 +88,17 @@ function fetch(_to, _from, _trace) {
   const rootRelativePath = sep + relative(rootDir, filename);
   const CSSSource = preProcess(readFileSync(filename, 'utf8'));
 
-  const result = postcss(plugins.concat(new Parser({ fetch, filename, trace })))
-    .process(CSSSource, assign(lazyResultOpts, {from: rootRelativePath}))
-    .root;
+  const lazyResult = postcss(plugins.concat(new Parser({ fetch, filename, trace })))
+    .process(CSSSource, assign(lazyResultOpts, {from: rootRelativePath}));
 
-  tokens = result.tokens;
+  lazyResult.warnings().forEach(message => console.warn(message.text));
+
+  tokens = lazyResult.root.tokens;
+  // updating cache
   tokensByFile[filename] = tokens;
 
   if (postProcess) {
-    postProcess(result.toResult().css);
+    postProcess(lazyResult.css);
   }
 
   return tokens;
