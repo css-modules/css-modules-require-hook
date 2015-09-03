@@ -1,67 +1,83 @@
 css-modules-require-hook
 ========================
 
-Automatically compiles a CSS Module to a low-level interchange format called ICSS or [Interoperable&nbsp;CSS](https://github.com/css-modules/icss).
+The require hook compiles [CSS Modules](https://github.com/css-modules/css-modules) in runtime. This is similar to Babel's [babel/register](https://babeljs.io/docs/usage/require/).
 
-One of the ways you can compile [CSS Modules](https://github.com/css-modules/css-modules) to the ICSS format is through the require hook. The require hook will bind itself to node's require and automatically compile files on the fly. This is similar to Babel's [babel/register](https://babeljs.io/docs/usage/require/).
+## What is CSS Modules
 
-## Requirements
+A **CSS Module** is a CSS file in which all class names and animation names are scoped locally by default. Learn more in the article [CSS Modules - Welcome to the Future](http://glenmaddern.com/articles/css-modules) by Glen&nbsp;Maddern.
 
-To use this tool we require postcss and few plugins to be installed on your project. See the list below:
+## Features
 
-- `"postcss": "4.x"`
-- `"postcss-modules-extract-imports": "0.x"`
-- `"postcss-modules-local-by-default": "0.x"`
-- `"postcss-modules-scope": "0.x"`
+Compiling in runtime, [universal](https://medium.com/@mjackson/universal-javascript-4761051b7ae9) usage.
 
-## Install
+## Usage
+
+### Requirements
+
+To use this tool we require [Node.js v0.12.x](https://github.com/nodejs/node) (or higher) and several modules to be installed.
+
+- [postcss](https://github.com/postcss/postcss) version 4 or higher
+- [postcss-modules-extract-imports](https://github.com/css-modules/postcss-modules-extract-imports)
+- [postcss-modules-local-by-default](https://github.com/css-modules/postcss-modules-local-by-default)
+- [postcss-modules-scope](https://github.com/css-modules/postcss-modules-scope)
+
+### Installation
 
 ```bash
 $ npm i css-modules-require-hook
 ```
 
-## Usage
+### Tuning (options)
 
-```javascript
-require('css-modules-require-hook');
+ * `function` **createImportedName** &mdash; short alias for the [postcss-modules-extract-imports](https://github.com/css-modules/postcss-modules-extract-imports) plugin's `createImportedName` option.
+ * `function` **generateScopedName** &mdash; short alias for the [postcss-modules-scope](https://github.com/css-modules/postcss-modules-scope) plugin's option. Helps you to specify the custom way to build generic names for the class selectors.
+ * `function` **processCss** &mdash; in rare cases you may want to get compiled styles in runtime, so providing this option helps.
+ * `string`   **rootDir** &mdash; absolute path to the project directory. Providing this will result in better generated class names. It can be obligatory, if you run require hook and build tools (like [css-modulesify](https://github.com/css-modules/css-modulesify)) from different working directories.
+ * `string`   **to** &mdash; provides `to` option to the [LazyResult instance](https://github.com/postcss/postcss/blob/master/docs/api.md#processorprocesscss-opts).
+ * `array`    **use** &mdash; custom subset of postcss plugins.
+
+### Examples
+
+Basically you need to require this plugin before other requires for your styles will occur.
+For&nbsp;example:
+
+*icon.css*
+```css
+.icon
+{
+  composes: fa fa-hand-peace-o from 'font-awesome/css/font-awesome.css';
+}
 ```
 
-## Available options
+*server.js*
+```javascript
+require('css-modules-require-hook');
 
-Providing additional options allows you to get advanced experience. See the variants below.
+var styles = require('./icon.css');
+var html = '<i class="' + styles.icon + '"></i>';
+// send it somehow :)
+```
+
+You'll get:
+
+```html
+<i class="_icon_font-awesome-css-font-awesome__fa _icon_font-awesome-css-font-awesome__fa-hand-peace-o"></i>'
+```
+
+In rare cases you may want to tune the require hook for better experience.
 
 ```javascript
 var hook = require('css-modules-require-hook');
-hook({ /* options */ });
+var path = require('path');
+
+hook({
+  // setting root to the parent directory
+  rootDir: path.join(__dirname, '..')
+});
 ```
 
-### `rootDir` option
-
-Aliases are `root`, `d`.
-
-Absolute path to your project's root directory. This is optional but providing it will result in better generated classnames. It can be obligatory, if you run require hook and build tools, like [css-modulesify](https://github.com/css-modules/css-modulesify) from different working directories.
-
-### `use` option
-
-Alias is `u`.
-
-Custom list of plugins. This is optional but helps you to extend list of basic [postcss](https://github.com/postcss/postcss) plugins. Also helps to specify options for particular plugins.
-
-### `createImportedName` option
-
-Alias for the `createImportedName` option from the [postcss-modules-extract-imports](https://github.com/css-modules/postcss-modules-extract-imports) plugin. This is optional. Won't work if you `use` option.
-
-### `generateScopedName` option
-
-Custom function to generate class names. This is optional. Alias for the `generateScopedName` option from the [postcss-modules-scope](https://github.com/css-modules/postcss-modules-scope) plugin. Won't work if you `use` option.
-
-### `mode` option
-
-Alias for the `mode` option from the [postcss-modules-local-by-default](https://github.com/css-modules/postcss-modules-local-by-default) plugin. This is optional. Won't work if you `use` option.
-
-## Examples
-
-If you want to add custom functionality, for example [CSS Next](http://cssnext.io/setup/#as-a-postcss-plugin) plugin, you should provide the `use` option.
+If you want to add any postcss plugins to the pipeline - you should use the `use` option.
 
 ```javascript
 var hook = require('css-modules-require-hook');
