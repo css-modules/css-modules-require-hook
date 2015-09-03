@@ -39,8 +39,7 @@ $ npm i css-modules-require-hook
 
 ### Examples
 
-Basically you need to require this plugin before other requires for your styles will occur.
-For&nbsp;example:
+Basically you need to load this module before you start loading css-modules. Otherwise you'll get an exception. For&nbsp;example:
 
 *icon.css*
 ```css
