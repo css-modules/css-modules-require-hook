@@ -1,21 +1,21 @@
 css-modules-require-hook
 ========================
 
-Summary
+The require hook compiles [CSS Modules](https://github.com/css-modules/css-modules) in runtime. This is similar to Babel's [babel/register](https://babeljs.io/docs/usage/require/).
 
 ## What is CSS Modules
 
-Summary
+A **CSS Module** is a CSS file in which all class names and animation names are scoped locally by default. Learn more in the article [CSS Modules - Welcome to the Future](http://glenmaddern.com/articles/css-modules) by Glen&nbsp;Maddern.
 
 ## Features
 
-Compiling in runtime, universal apps
+Compiling in runtime, [universal](https://medium.com/@mjackson/universal-javascript-4761051b7ae9) usage.
 
 ## Usage
 
 ### Requirements
 
-To use this tool we require [Node.js](https://github.com/nodejs/node) v0.12.x (or higher) and several modules to be installed.
+To use this tool we require [Node.js v0.12.x](https://github.com/nodejs/node) (or higher) and several modules to be installed.
 
 - [postcss](https://github.com/postcss/postcss) version 4 or higher
 - [postcss-modules-extract-imports](https://github.com/css-modules/postcss-modules-extract-imports)
@@ -40,10 +40,29 @@ $ npm i css-modules-require-hook
 ### Examples
 
 Basically you need to require this plugin before other requires for your styles will occur.
+For&nbsp;example:
 
+*icon.css*
+```css
+.icon
+{
+  composes: fa fa-hand-peace-o from 'font-awesome/css/font-awesome.css';
+}
+```
+
+*server.js*
 ```javascript
 require('css-modules-require-hook');
-// ...
+
+var styles = require('./icon.css');
+var html = '<i class="' + styles.icon + '"></i>';
+// send it somehow :)
+```
+
+You'll get:
+
+```html
+<i class="_icon_font-awesome-css-font-awesome__fa _icon_font-awesome-css-font-awesome__fa-hand-peace-o"></i>'
 ```
 
 In rare cases you may want to tune the require hook for better experience.
@@ -55,5 +74,23 @@ var path = require('path');
 hook({
   // setting root to the parent directory
   rootDir: path.join(__dirname, '..')
+});
+```
+
+If you want to add any postcss plugins to the pipeline - you should use the `use` option.
+
+```javascript
+var hook = require('css-modules-require-hook');
+
+hook({
+  use: [
+    // adding CSS Next plugin
+    require('cssnext')(),
+
+    // adding basic css-modules plugins
+    require('postcss-modules-extract-imports'),
+    require('postcss-modules-local-by-default'),
+    require('postcss-modules-scope')
+  ]
 });
 ```
