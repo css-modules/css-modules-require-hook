@@ -219,6 +219,19 @@ describe('common-test-cases', () => {
       });
     });
 
+    describe('extra extension', () => {
+      before(() => {
+        expectedTokens = JSON.parse(readFileSync(resolve('test/test-cases/extra-extension/expected.json'), 'utf8'));
+        hook({extensions: ['.scss']})
+      });
+
+      it('require-hook', () => {
+        const tokens = require(resolve('test/test-cases/extra-extension/source.scss'));
+        equal(JSON.stringify(tokens), JSON.stringify(expectedTokens));
+      });
+
+    });
+
   });
 
 });
