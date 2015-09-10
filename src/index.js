@@ -16,7 +16,7 @@ import Parser from './parser';
 let importNr = 0;
 let tokensByFile = {};
 // processing functions
-const preProcess = identity;
+let preProcess = identity;
 let postProcess;
 // defaults
 let lazyResultOpts = {};
@@ -27,6 +27,7 @@ let rootDir = process.cwd();
  * @param  {object}   opts
  * @param  {function} opts.createImportedName
  * @param  {function} opts.generateScopedName
+ * @param  {function} opts.preprocessCss
  * @param  {function} opts.processCss
  * @param  {string}   opts.rootDir
  * @param  {string}   opts.to
@@ -37,6 +38,7 @@ export default function setup(opts = {}) {
   importNr = 0;
   tokensByFile = {};
 
+  preProcess = get('preprocessCss', null, 'function', opts) || identity;
   postProcess = get('processCss', null, 'function', opts) || null;
   rootDir = get('rootDir', ['root', 'd'], 'string', opts) || process.cwd();
   // https://github.com/postcss/postcss/blob/master/docs/api.md#processorprocesscss-opts
