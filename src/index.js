@@ -31,6 +31,7 @@ let rootDir = process.cwd();
  * @param  {string}   opts.rootDir
  * @param  {string}   opts.to
  * @param  {array}    opts.use
+ * @param  {array}    opts.extensions
  */
 export default function setup(opts = {}) {
   // clearing cache
@@ -63,6 +64,13 @@ export default function setup(opts = {}) {
   plugins.push(generateScopedName
     ? new Scope({generateScopedName: opts.generateScopedName})
     : Scope);
+
+  const extraExtensions = get('extensions', null, 'array', opts);
+  if (extraExtensions) {
+    extraExtensions.forEach((extension) => {
+      hook(filename => fetch(filename, filename), extension);
+    });
+  }
 }
 
 /**
@@ -104,4 +112,4 @@ function fetch(_to, _from, _trace) {
   return tokens;
 }
 
-hook(filename => fetch(filename, filename));
+hook(filename => fetch(filename, filename), '.css');
