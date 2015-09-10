@@ -7,6 +7,11 @@ import LocalByDefault from 'postcss-modules-local-by-default';
 import Scope from 'postcss-modules-scope';
 
 describe('plugins', () => {
+  beforeEach(() => {
+    // clearing cache
+    delete require.cache[require.resolve('awesome-theme/oceanic.css')];
+  });
+
   describe('custom generateScopedName() function', () => {
     before(() => hook({generateScopedName: identity}));
 
