@@ -52,6 +52,7 @@ export default function setup(opts = {}) {
     });
   }
 
+  // Warning. Options, which aren't affected by plugins, should be processed above.
   const customPlugins = get('use', ['u'], 'array', opts);
   if (customPlugins) {
     return void (plugins = customPlugins);
