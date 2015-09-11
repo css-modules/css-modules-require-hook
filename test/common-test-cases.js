@@ -2,6 +2,9 @@ import { equal } from 'assert';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { extend } from 'lodash';
+import ExtractImports from 'postcss-modules-extract-imports';
+import LocalByDefault from 'postcss-modules-local-by-default';
+import Scope from 'postcss-modules-scope';
 import FileSystemLoader from 'css-modules-loader-core/lib/file-system-loader';
 import hook from '../src';
 
@@ -219,10 +222,14 @@ describe('common-test-cases', () => {
       });
     });
 
-    describe('extra extension', () => {
+    describe('extra extension with custom plugins', () => {
       before(() => {
         expectedTokens = JSON.parse(readFileSync(resolve('test/test-cases/extra-extension/expected.json'), 'utf8'));
-        hook({extensions: ['.scss']})
+        hook({extensions: ['.scss'], use: [
+          ExtractImports,
+          LocalByDefault,
+          Scope,
+        ]});
       });
 
       it('require-hook', () => {

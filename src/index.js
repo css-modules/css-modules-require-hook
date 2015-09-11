@@ -45,6 +45,13 @@ export default function setup(opts = {}) {
   // https://github.com/postcss/postcss/blob/master/docs/api.md#processorprocesscss-opts
   lazyResultOpts = pick(opts, ['to']);
 
+  const extraExtensions = get('extensions', null, 'array', opts);
+  if (extraExtensions) {
+    extraExtensions.forEach((extension) => {
+      hook(filename => fetch(filename, filename), extension);
+    });
+  }
+
   const customPlugins = get('use', ['u'], 'array', opts);
   if (customPlugins) {
     return void (plugins = customPlugins);
@@ -66,13 +73,6 @@ export default function setup(opts = {}) {
   plugins.push(generateScopedName
     ? new Scope({generateScopedName: opts.generateScopedName})
     : Scope);
-
-  const extraExtensions = get('extensions', null, 'array', opts);
-  if (extraExtensions) {
-    extraExtensions.forEach((extension) => {
-      hook(filename => fetch(filename, filename), extension);
-    });
-  }
 }
 
 /**
