@@ -8,7 +8,32 @@ describe('public api', () => {
     delete require.cache[require.resolve('awesome-theme/oceanic.css')];
   });
 
-  describe('preprocessCss', () => {
+  describe('preprocessCss()', () => {
+    describe('content of the file and filename are provided to the preprocessCss function', () => {
+      let providedCSS;
+      let providedFilename;
+
+      beforeEach(() => {
+        const spy = (content, filename) => {
+          providedCSS = content;
+          providedFilename = filename;
+          return content;
+        };
+
+        hook({preprocessCss: spy});
+        require('awesome-theme/oceanic.css');
+      });
+
+      it('content of file should be provided', () => {
+        equal(typeof providedCSS, 'string');
+        ok(providedCSS.length);
+      });
+
+      it('filename should be provided', () => {
+        equal(providedFilename, require.resolve('awesome-theme/oceanic.css'));
+      });
+    });
+
     describe('providing empty string constantly', () => {
       before(() => hook({preprocessCss: constant('')}));
 
@@ -25,6 +50,31 @@ describe('public api', () => {
         const tokens = require('awesome-theme/oceanic.css');
         ok(tokens.color);
       });
+    });
+  });
+
+  describe('processCss()', () => {
+    let providedCSS;
+    let providedFilename;
+
+    beforeEach(() => {
+      const spy = (content, filename) => {
+        providedCSS = content;
+        providedFilename = filename;
+        return content;
+      };
+
+      hook({processCss: spy});
+      require('awesome-theme/oceanic.css');
+    });
+
+    it('content of file should be provided', () => {
+      equal(typeof providedCSS, 'string');
+      ok(providedCSS.length);
+    });
+
+    it('filename should be provided', () => {
+      equal(providedFilename, require.resolve('awesome-theme/oceanic.css'));
     });
   });
 });

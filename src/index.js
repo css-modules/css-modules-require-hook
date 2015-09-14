@@ -97,7 +97,7 @@ function fetch(_to, _from, _trace) {
   }
 
   const rootRelativePath = sep + relative(rootDir, filename);
-  const CSSSource = preProcess(readFileSync(filename, 'utf8'));
+  const CSSSource = preProcess(readFileSync(filename, 'utf8'), filename);
 
   const lazyResult = postcss(plugins.concat(new Parser({ fetch, filename, trace })))
     .process(CSSSource, assign(lazyResultOpts, {from: rootRelativePath}));
@@ -109,7 +109,7 @@ function fetch(_to, _from, _trace) {
   tokensByFile[filename] = tokens;
 
   if (postProcess) {
-    postProcess(lazyResult.css);
+    postProcess(lazyResult.css, filename);
   }
 
   return tokens;
