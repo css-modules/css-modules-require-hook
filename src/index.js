@@ -1,3 +1,4 @@
+import debug from 'debug';
 import hook from './hook';
 import { readFileSync } from 'fs';
 import { dirname, sep, relative, resolve } from 'path';
@@ -11,6 +12,9 @@ import ExtractImports from 'postcss-modules-extract-imports';
 import LocalByDefault from 'postcss-modules-local-by-default';
 import Scope from 'postcss-modules-scope';
 import Parser from './parser';
+
+const debugFetch = debug('css-modules:fetch');
+const debugSetup = debug('css-modules:setup');
 
 // cache
 let importNr = 0;
@@ -35,6 +39,7 @@ let rootDir = process.cwd();
  * @param  {array}    opts.extensions
  */
 export default function setup(opts = {}) {
+  debugSetup(opts);
   // clearing cache
   importNr = 0;
   tokensByFile = {};
@@ -96,6 +101,7 @@ function fetch(_to, _from, _trace) {
     return tokens;
   }
 
+  debugFetch(filename);
   const rootRelativePath = sep + relative(rootDir, filename);
   const CSSSource = preProcess(readFileSync(filename, 'utf8'), filename);
 
