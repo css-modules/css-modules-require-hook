@@ -101,10 +101,11 @@ function fetch(_to, _from, _trace) {
   // checking cache
   let tokens = tokensByFile[filename];
   if (tokens) {
+    debugFetch({cache: true, filename});
     return tokens;
   }
 
-  debugFetch(filename);
+  debugFetch({cache: false, filename});
   const rootRelativePath = sep + relative(rootDir, filename);
   const CSSSource = preProcess(readFileSync(filename, 'utf8'), filename);
 
