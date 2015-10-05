@@ -1,80 +1,137 @@
-import { constant } from 'lodash';
+import { noop } from 'lodash';
 import { equal, ok } from 'assert';
+import { dropCache, spy, Through } from '../utils/sugar';
 import hook from '../src';
 
 describe('public api', () => {
-  beforeEach(() => {
-    // clearing cache
-    delete require.cache[require.resolve('awesome-theme/oceanic.css')];
-  });
+  afterEach(() => dropCache('awesome-theme/oceanic.css'));
 
-  describe('preprocessCss()', () => {
-    describe('content of the file and filename are provided to the preprocessCss function', () => {
-      let providedCSS;
-      let providedFilename;
+  describe('extending list of plugins', () => {
+    describe('"prepend" should add plugins in the beginning of the pipeline', () => {
+      let processor;
 
       beforeEach(() => {
-        const spy = (content, filename) => {
-          providedCSS = content;
-          providedFilename = filename;
-          return content;
-        };
+        processor = spy(noop);
 
-        hook({preprocessCss: spy});
+        hook({
+          prepend: [
+            new Through({processor: processor}),
+          ],
+        });
+
         require('awesome-theme/oceanic.css');
       });
 
-      it('content of file should be provided', () => {
-        equal(typeof providedCSS, 'string');
-        ok(providedCSS.length);
-      });
-
-      it('filename should be provided', () => {
-        equal(providedFilename, require.resolve('awesome-theme/oceanic.css'));
-      });
+      it('processor should be called', () =>
+        ok(processor.called));
     });
 
-    describe('providing empty string constantly', () => {
-      before(() => hook({preprocessCss: constant('')}));
+    describe('"append" should add plugins to the pipeline', () => {
+      let processor;
 
-      it('should return an empty result', () => {
-        const tokens = require('awesome-theme/oceanic.css');
-        equal(Object.keys(tokens).length, 0);
+      beforeEach(() => {
+        processor = spy(noop);
+
+        hook({
+          append: [
+            new Through({processor: processor}),
+          ],
+        });
+
+        require('awesome-theme/oceanic.css');
       });
+
+      it('processor should be called', () =>
+        ok(processor.called));
     });
 
-    describe('providing nothing should reset preProcess', () => {
-      before(() => hook());
+    describe('"use" should set the new list of plugins', () => {
+      let appendProcessor;
+      let prependProcessor;
+      let useProcessor;
 
-      it('should return the "color" token', () => {
-        const tokens = require('awesome-theme/oceanic.css');
-        ok(tokens.color);
+      beforeEach(() => {
+        appendProcessor = spy(noop);
+        prependProcessor = spy(noop);
+        useProcessor = spy(noop);
+
+        hook({
+          append: [
+            new Through({processor: appendProcessor}),
+          ],
+          prepend: [
+            new Through({processor: prependProcessor}),
+          ],
+          use: [
+            new Through({processor: useProcessor}),
+          ],
+        });
+
+        require('awesome-theme/oceanic.css');
       });
+
+      it('plugin added by append option should not be called', () =>
+        ok(!appendProcessor.called));
+
+      it('plugin added by prepend option should not be called', () =>
+        ok(!prependProcessor.called));
+
+      it('plugin added by use option should be called', () =>
+        ok(useProcessor.called));
     });
   });
 
-  describe('processCss()', () => {
-    let providedCSS;
-    let providedFilename;
+  describe('setting custom processors for the CSS', () => {
+    describe('"preprocessCss()" should transform CSS before the PostCSS', () => {
+      let processor;
+      let providedFilename;
+      let providedContent;
 
-    beforeEach(() => {
-      const spy = (content, filename) => {
-        providedCSS = content;
-        providedFilename = filename;
-        return content;
-      };
+      beforeEach(() => {
+        processor = spy((content, filename) => {
+          providedFilename = filename;
+          providedContent = content;
+          return '';
+        });
 
-      hook({processCss: spy});
-      require('awesome-theme/oceanic.css');
+        hook({preprocessCss: processor});
+        require('awesome-theme/oceanic.css');
+      });
+
+      it('processor should be called', () =>
+        ok(processor.called));
+
+      it('filename should be provided', () =>
+        equal(providedFilename, require.resolve('awesome-theme/oceanic.css')));
+
+      it('content of the file should be provided', () =>
+        ok(providedContent.length));
     });
 
-    it('content of file should be provided', () => {
-      equal(typeof providedCSS, 'string');
-      ok(providedCSS.length);
-    });
+    describe('"processCss()" should transform CSS after the PostCSS', () => {
+      let processor;
+      let providedFilename;
+      let providedContent;
 
-    it('filename should be provided', () => {
-      equal(providedFilename, require.resolve('awesome-theme/oceanic.css'));
+      beforeEach(() => {
+        processor = spy((content, filename) => {
+          providedFilename = filename;
+          providedContent = content;
+          return '';
+        });
+
+        hook({processCss: processor});
+        require('awesome-theme/oceanic.css');
+      });
+
+      it('processor should be called', () =>
+        ok(processor.called));
+
+      it('filename should be provided', () =>
+        equal(providedFilename, require.resolve('awesome-theme/oceanic.css')));
+
+      it('content of the file should be provided', () =>
+        ok(providedContent.length));
     });
   });
 });

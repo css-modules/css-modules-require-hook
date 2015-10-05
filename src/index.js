@@ -63,22 +63,25 @@ export default function setup(opts = {}) {
     return void (plugins = customPlugins);
   }
 
-  plugins = [];
-
+  const prepend = get('prepend', null, 'array', opts) || [];
+  const append = get('append', null, 'array', opts) || [];
   const mode = get('mode', null, 'string', opts);
-  plugins.push(mode
-    ? new LocalByDefault({mode: opts.mode})
-    : LocalByDefault);
-
   const createImportedName = get('createImportedName', null, 'function', opts);
-  plugins.push(createImportedName
-    ? new ExtractImports({createImportedName: opts.createImportedName})
-    : ExtractImports);
-
   const generateScopedName = get('generateScopedName', null, 'function', opts);
-  plugins.push(generateScopedName
-    ? new Scope({generateScopedName: opts.generateScopedName})
-    : Scope);
+
+  plugins = [
+    ...prepend,
+    mode
+      ? new LocalByDefault({mode: opts.mode})
+      : LocalByDefault,
+    createImportedName
+      ? new ExtractImports({createImportedName: opts.createImportedName})
+      : ExtractImports,
+    generateScopedName
+      ? new Scope({generateScopedName: opts.generateScopedName})
+      : Scope,
+    ...append,
+  ];
 }
 
 /**
@@ -98,10 +101,11 @@ function fetch(_to, _from, _trace) {
   // checking cache
   let tokens = tokensByFile[filename];
   if (tokens) {
+    debugFetch({cache: true, filename});
     return tokens;
   }
 
-  debugFetch(filename);
+  debugFetch({cache: false, filename});
   const rootRelativePath = sep + relative(rootDir, filename);
   const CSSSource = preProcess(readFileSync(filename, 'utf8'), filename);
 

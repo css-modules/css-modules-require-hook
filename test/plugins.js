@@ -1,5 +1,6 @@
 import { equal } from 'assert';
 import { identity } from 'lodash';
+import { dropCache } from '../utils/sugar';
 import hook from '../src';
 
 import ExtractImports from 'postcss-modules-extract-imports';
@@ -7,10 +8,7 @@ import LocalByDefault from 'postcss-modules-local-by-default';
 import Scope from 'postcss-modules-scope';
 
 describe('plugins', () => {
-  beforeEach(() => {
-    // clearing cache
-    delete require.cache[require.resolve('awesome-theme/oceanic.css')];
-  });
+  afterEach(() => dropCache('awesome-theme/oceanic.css'));
 
   describe('custom generateScopedName() function', () => {
     before(() => hook({generateScopedName: identity}));
