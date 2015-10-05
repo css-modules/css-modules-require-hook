@@ -3,5 +3,6 @@
 .git*
 .npmignore
 generate-tests.js
-test/
 src/
+test/
+utils/
