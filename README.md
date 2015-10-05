@@ -140,3 +140,14 @@ Short alias for the [postcss-modules-extract-imports](https://github.com/css-mod
 ### `generateScopedName` function
 
 Short alias for the [postcss-modules-scope](https://github.com/css-modules/postcss-modules-scope) plugin's option. Helps you to specify the custom way to build generic names for the class selectors.
+
+### `mode` string
+
+Short alias for the [postcss-modules-local-by-default](https://github.com/css-modules/postcss-modules-local-by-default) plugin's option.
+
+## Debugging
+
+[debug](https://www.npmjs.com/package/debug) package is used for debugging. So to turn it on simply specify the **DEBUG** environment variable:
+- `DEBUG=css-modules:fetch` &mdash; to see resolved paths to the files.
+- `DEBUG=css-modules:setup` &mdash; to see the new options list.
+- `DEBUG=css-modules:*` &mdash; to see everything.
