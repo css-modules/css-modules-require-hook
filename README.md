@@ -151,3 +151,7 @@ Short alias for the [postcss-modules-local-by-default](https://github.com/css-mo
 - `DEBUG=css-modules:fetch` &mdash; to see resolved paths to the files.
 - `DEBUG=css-modules:setup` &mdash; to see the new options list.
 - `DEBUG=css-modules:*` &mdash; to see everything.
+
+## Links
+
+- Electon support: [css-modules-electron](https://github.com/KenPowers/css-modules-electron)
