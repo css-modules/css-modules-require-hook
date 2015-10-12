@@ -35,9 +35,9 @@
   },
   "peerDependencies": {
     "postcss": ">=4.x",
-    "postcss-modules-extract-imports": ">=0.x",
-    "postcss-modules-local-by-default": ">=0.x",
-    "postcss-modules-scope": ">=0.x"
+    "postcss-modules-extract-imports": ">=0.x || ^1.0.0-beta",
+    "postcss-modules-local-by-default": ">=0.x || ^1.0.0-beta",
+    "postcss-modules-scope": ">=0.x || ^1.0.0-beta"
   },
   "scripts": {
     "start": "esw -w .",
