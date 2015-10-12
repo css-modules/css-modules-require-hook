@@ -117,9 +117,32 @@ Provides the full list of PostCSS plugins to the pipeline. Providing this cancel
 
 In rare cases you may want to precompile styles, before they will be passed to the PostCSS pipeline. You should use **synchronous** transformations, since `require` function is synchronous.
 
+```javascript
+hook({
+  /**
+   * @param  {string} css
+   * @param  {string} filepath Absolute path to the file
+   * @return {string}
+   */
+  preprocessCss: function (css, filepath) {
+    return css;
+  }
+});
+```
+
 ### `processCss` function
 
 In rare cases you may want to get compiled styles in runtime, so providing this option helps.
+
+```javascript
+hook({
+  /**
+   * @param  {string} css
+   * @param  {string} filepath Absolute path to the file
+   */
+  processCss: function (css, filepath) { /* */ }
+});
+```
 
 ### `extensions` array
 
@@ -140,6 +163,20 @@ Short alias for the [postcss-modules-extract-imports](https://github.com/css-mod
 ### `generateScopedName` function
 
 Short alias for the [postcss-modules-scope](https://github.com/css-modules/postcss-modules-scope) plugin's option. Helps you to specify the custom way to build generic names for the class selectors.
+
+```javascript
+hook({
+  /**
+   * @param  {string} name     Usually a class name
+   * @param  {string} filepath
+   * @param  {string} css
+   * @return {string}
+   */
+  generateScopedName: function (name, filepath, css) {
+    return name;
+  }
+});
+```
 
 ### `mode` string
 
