@@ -27,17 +27,17 @@
     "isparta": "^3.0.3",
     "lodash": "^3.10.1",
     "mocha": "^2.2.5",
-    "postcss": "5.x",
-    "postcss-modules-extract-imports": "^1.0.0-beta",
-    "postcss-modules-local-by-default": "^1.0.0-beta",
-    "postcss-modules-scope": "^1.0.0-beta",
+    "postcss": "^5.x",
+    "postcss-modules-extract-imports": "^1.0.0",
+    "postcss-modules-local-by-default": "^1.0.0",
+    "postcss-modules-scope": "^1.0.0",
     "precommit-hook": "^3.0.0"
   },
   "peerDependencies": {
-    "postcss": ">=4.x",
-    "postcss-modules-extract-imports": ">=0.x || ^1.0.0-beta",
-    "postcss-modules-local-by-default": ">=0.x || ^1.0.0-beta",
-    "postcss-modules-scope": ">=0.x || ^1.0.0-beta"
+    "postcss": "^5.x",
+    "postcss-modules-extract-imports": "^1.0.0",
+    "postcss-modules-local-by-default": "^1.0.0",
+    "postcss-modules-scope": "^1.0.0"
   },
   "scripts": {
     "start": "esw -w .",
