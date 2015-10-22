@@ -16,7 +16,8 @@ Compiling in runtime, [universal](https://medium.com/@mjackson/universal-javascr
 
 To use this tool we require [Node.js v0.12.x](https://github.com/nodejs/node) (or higher) and several modules to be installed.
 
-- [postcss](https://github.com/postcss/postcss) version 4 or higher
+- [postcss](https://github.com/postcss/postcss) version 5 or higher
+- [postcss-modules-values](https://github.com/css-modules/postcss-modules-values)
 - [postcss-modules-extract-imports](https://github.com/css-modules/postcss-modules-extract-imports)
 - [postcss-modules-local-by-default](https://github.com/css-modules/postcss-modules-local-by-default)
 - [postcss-modules-scope](https://github.com/css-modules/postcss-modules-scope)
