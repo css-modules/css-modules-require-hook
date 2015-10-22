@@ -1,4 +1,5 @@
 import { plugin } from 'postcss';
+import replaceSymbols from 'icss-replace-symbols';
 
 const importRegexp = /^:import\((.+)\)$/;
 
@@ -30,11 +31,7 @@ export default plugin('parser', function parser(opts = {}) {
     });
   };
 
-  const linkImportedSymbols = css => css.eachDecl(decl => {
-    Object.keys(translations).forEach(translation => {
-      decl.value = decl.value.replace(translation, translations[translation]);
-    });
-  });
+  const linkImportedSymbols = css => replaceSymbols(css, translations);
 
   const handleExport = exportNode => {
     exportNode.each(decl => {

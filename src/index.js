@@ -8,6 +8,7 @@ import identity from 'lodash.identity';
 import pick from 'lodash.pick';
 import postcss from 'postcss';
 
+import Values from 'postcss-modules-values';
 import ExtractImports from 'postcss-modules-extract-imports';
 import LocalByDefault from 'postcss-modules-local-by-default';
 import Scope from 'postcss-modules-scope';
@@ -71,6 +72,7 @@ export default function setup(opts = {}) {
 
   plugins = [
     ...prepend,
+    Values,
     mode
       ? new LocalByDefault({mode: opts.mode})
       : LocalByDefault,
