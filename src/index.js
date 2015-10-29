@@ -1,4 +1,5 @@
 import debug from 'debug';
+import genericNames from 'generic-names';
 import hook from './hook';
 import { readFileSync } from 'fs';
 import { dirname, sep, relative, resolve } from 'path';
@@ -25,8 +26,10 @@ let preProcess = identity;
 let postProcess;
 // defaults
 let lazyResultOpts = {};
-let plugins = [LocalByDefault, ExtractImports, Scope];
+let plugins = [Values, LocalByDefault, ExtractImports];
+let terminalPlugins = [];
 let rootDir = process.cwd();
+let generateScopedName = genericNames('[name]__[local]___[hash:base64:5]', {context: rootDir});
 
 /**
  * @param  {object}   opts
@@ -64,11 +67,12 @@ export default function setup(opts = {}) {
     return void (plugins = customPlugins);
   }
 
+  terminalPlugins = get('append', null, 'array', opts) || [];
+  generateScopedName = get('generateScopedName', null, 'function', opts)
+    || genericNames('[name]__[local]___[hash:base64:5]', {context: rootDir});
   const prepend = get('prepend', null, 'array', opts) || [];
-  const append = get('append', null, 'array', opts) || [];
   const mode = get('mode', null, 'string', opts);
   const createImportedName = get('createImportedName', null, 'function', opts);
-  const generateScopedName = get('generateScopedName', null, 'function', opts);
 
   plugins = [
     ...prepend,
@@ -79,10 +83,6 @@ export default function setup(opts = {}) {
     createImportedName
       ? new ExtractImports({createImportedName: opts.createImportedName})
       : ExtractImports,
-    generateScopedName
-      ? new Scope({generateScopedName: opts.generateScopedName})
-      : Scope,
-    ...append,
   ];
 }
 
@@ -111,8 +111,11 @@ function fetch(_to, _from, _trace) {
   const rootRelativePath = sep + relative(rootDir, filename);
   const CSSSource = preProcess(readFileSync(filename, 'utf8'), filename);
 
-  const lazyResult = postcss(plugins.concat(new Parser({ fetch, filename, trace })))
-    .process(CSSSource, assign(lazyResultOpts, {from: rootRelativePath}));
+  const lazyResult = postcss(plugins.concat(
+    new Scope({generateScopedName: (name, _, css) => generateScopedName(name, filename, css)}),
+    terminalPlugins,
+    new Parser({ fetch, filename, trace }))
+  ).process(CSSSource, assign(lazyResultOpts, {from: rootRelativePath}));
 
   lazyResult.warnings().forEach(message => console.warn(message.text));
 
