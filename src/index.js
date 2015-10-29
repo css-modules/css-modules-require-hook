@@ -68,11 +68,14 @@ export default function setup(opts = {}) {
   }
 
   terminalPlugins = get('append', null, 'array', opts) || [];
-  generateScopedName = get('generateScopedName', null, 'function', opts)
-    || genericNames('[name]__[local]___[hash:base64:5]', {context: rootDir});
   const prepend = get('prepend', null, 'array', opts) || [];
   const mode = get('mode', null, 'string', opts);
   const createImportedName = get('createImportedName', null, 'function', opts);
+  const scopeOption = get('generateScopedName', null, ['function', 'string'], opts)
+    || genericNames('[name]__[local]___[hash:base64:5]', {context: rootDir});
+  generateScopedName = typeof scopeOption === 'string'
+    ? genericNames(scopeOption, {context: rootDir})
+    : scopeOption;
 
   plugins = [
     ...prepend,
