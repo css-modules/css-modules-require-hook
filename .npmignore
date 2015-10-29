@@ -2,6 +2,7 @@
 
 .git*
 .npmignore
+.travis.yml
 generate-tests.js
 src/
 test/
