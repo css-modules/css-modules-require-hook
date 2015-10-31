@@ -18,6 +18,14 @@ const check = {
  */
 export function get(prop, aliases, type, source) {
   if (source[prop]) {
+    if (isArray(type)) {
+      if (type.some(tp => is(tp, source[prop]))) {
+        return source[prop];
+      }
+
+      throw new Error(format('should specify %s for %s', type.join('|'), prop));
+    }
+
     if (!is(type, source[prop])) {
       throw new Error(format('should specify %s for %s', type, prop));
     }
