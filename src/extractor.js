@@ -18,7 +18,7 @@ import Parser from './parser';
  * @param  {function}        fetch
  * @return {object}
  */
-export function get({
+export default function extractor({
   append = [],
   prepend = [],
   createImportedName,

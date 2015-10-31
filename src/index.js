@@ -1,7 +1,7 @@
 import debug from 'debug';
 import hook from './hook';
 import identity from 'lodash.identity';
-import { get } from './extractor';
+import extractor from './extractor';
 import { readFileSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { removeQuotes } from './utility';
@@ -9,7 +9,7 @@ import { removeQuotes } from './utility';
 // cache
 let tokensByFile = {};
 // global
-let extractorOptions;
+let instance = extractor({}, fetch);
 let processorOptions = {};
 let preProcess = identity;
 let postProcess;
@@ -26,7 +26,7 @@ const debugSetup = debug('css-modules:setup');
  */
 export default function setup({ extensions: extraExtensions, preprocessCss, processCss, to, ...rest } = {}) {
   debugSetup(arguments[0]);
-  extractorOptions = rest;
+  instance = extractor(rest, fetch);
   processorOptions = {to};
   preProcess = preprocessCss || identity;
   postProcess = processCss || null;
@@ -60,8 +60,7 @@ function fetch(_to, from) {
   debugFetch({cache: false, filename});
   const CSSSource = preProcess(readFileSync(filename, 'utf8'), filename);
   // https://github.com/postcss/postcss/blob/master/docs/api.md#processorprocesscss-opts
-  const lazyResult = get(extractorOptions, fetch)
-    .process(CSSSource, Object.assign(processorOptions, {from: filename}));
+  const lazyResult = instance.process(CSSSource, Object.assign(processorOptions, {from: filename}));
 
   // https://github.com/postcss/postcss/blob/master/docs/api.md#lazywarnings
   lazyResult.warnings().forEach(message => console.warn(message.text));
