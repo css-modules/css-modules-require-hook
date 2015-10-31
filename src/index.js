@@ -1,107 +1,52 @@
 import debug from 'debug';
-import genericNames from 'generic-names';
 import hook from './hook';
-import { readFileSync } from 'fs';
-import { dirname, sep, relative, resolve } from 'path';
-import { get, removeQuotes } from './utility';
-import assign from 'lodash.assign';
 import identity from 'lodash.identity';
-import pick from 'lodash.pick';
-import postcss from 'postcss';
+import { get } from './extractor';
+import { readFileSync } from 'fs';
+import { dirname, resolve } from 'path';
+import { removeQuotes } from './utility';
 
-import Values from 'postcss-modules-values';
-import ExtractImports from 'postcss-modules-extract-imports';
-import LocalByDefault from 'postcss-modules-local-by-default';
-import Scope from 'postcss-modules-scope';
-import Parser from './parser';
+// cache
+let tokensByFile = {};
+// global
+let extractorOptions;
+let processorOptions = {};
+let preProcess = identity;
+let postProcess;
 
 const debugFetch = debug('css-modules:fetch');
 const debugSetup = debug('css-modules:setup');
 
-// cache
-let importNr = 0;
-let tokensByFile = {};
-// processing functions
-let preProcess = identity;
-let postProcess;
-// defaults
-let lazyResultOpts = {};
-let plugins = [Values, LocalByDefault, ExtractImports];
-let terminalPlugins = [];
-let rootDir = process.cwd();
-let generateScopedName = genericNames('[name]__[local]___[hash:base64:5]', {context: rootDir});
-
 /**
- * @param  {object}   opts
- * @param  {function} opts.createImportedName
- * @param  {function} opts.generateScopedName
- * @param  {function} opts.preprocessCss
- * @param  {function} opts.processCss
- * @param  {string}   opts.rootDir
- * @param  {string}   opts.to
- * @param  {array}    opts.use
- * @param  {array}    opts.extensions
+ * @param  {array}    options.extensions
+ * @param  {function} options.preprocessCss
+ * @param  {function} options.processCss
+ * @param  {string}   options.to
+ * @param  {object}   options.rest
  */
-export default function setup(opts = {}) {
-  debugSetup(opts);
-  // clearing cache
-  importNr = 0;
-  tokensByFile = {};
+export default function setup({ extensions: extraExtensions, preprocessCss, processCss, to, ...rest } = {}) {
+  debugSetup(arguments[0]);
+  extractorOptions = rest;
+  processorOptions = {to};
+  preProcess = preprocessCss || identity;
+  postProcess = processCss || null;
 
-  preProcess = get('preprocessCss', null, 'function', opts) || identity;
-  postProcess = get('processCss', null, 'function', opts) || null;
-  rootDir = get('rootDir', ['root', 'd'], 'string', opts) || process.cwd();
-  // https://github.com/postcss/postcss/blob/master/docs/api.md#processorprocesscss-opts
-  lazyResultOpts = pick(opts, ['to']);
-
-  const extraExtensions = get('extensions', null, 'array', opts);
   if (extraExtensions) {
-    extraExtensions.forEach((extension) => {
-      hook(filename => fetch(filename, filename), extension);
-    });
+    extraExtensions.forEach((extension) => hook(filename => fetch(filename, filename), extension));
   }
-
-  // Warning. Options, which aren't affected by plugins, should be processed above.
-  const customPlugins = get('use', ['u'], 'array', opts);
-  if (customPlugins) {
-    return void (plugins = customPlugins);
-  }
-
-  terminalPlugins = get('append', null, 'array', opts) || [];
-  const prepend = get('prepend', null, 'array', opts) || [];
-  const mode = get('mode', null, 'string', opts);
-  const createImportedName = get('createImportedName', null, 'function', opts);
-  const scopeOption = get('generateScopedName', null, ['function', 'string'], opts)
-    || genericNames('[name]__[local]___[hash:base64:5]', {context: rootDir});
-  generateScopedName = typeof scopeOption === 'string'
-    ? genericNames(scopeOption, {context: rootDir})
-    : scopeOption;
-
-  plugins = [
-    ...prepend,
-    Values,
-    mode
-      ? new LocalByDefault({mode: opts.mode})
-      : LocalByDefault,
-    createImportedName
-      ? new ExtractImports({createImportedName: opts.createImportedName})
-      : ExtractImports,
-  ];
 }
 
 /**
- * @param  {string} _to    Absolute or relative path. Also can be path to the Node.JS module.
- * @param  {string} _from  Absolute path (relative to root).
- * @param  {string} _trace
+ * @param  {string} _to  Absolute or relative path. Also can be path to the Node.JS module.
+ * @param  {string} from Absolute path.
  * @return {object}
  */
-function fetch(_to, _from, _trace) {
-  const trace = _trace || String.fromCharCode(importNr++);
-  const newPath = removeQuotes(_to);
+function fetch(_to, from) {
+  const to = removeQuotes(_to);
   // getting absolute path to the processing file
-  const filename = /\w/.test(newPath[0])
-    ? require.resolve(newPath)
-    : resolve(dirname(_from), newPath);
+  const filename = /\w/i.test(to[0])
+    ? require.resolve(to)
+    : resolve(dirname(from), to);
 
   // checking cache
   let tokens = tokensByFile[filename];
@@ -111,19 +56,16 @@ function fetch(_to, _from, _trace) {
   }
 
   debugFetch({cache: false, filename});
-  const rootRelativePath = sep + relative(rootDir, filename);
   const CSSSource = preProcess(readFileSync(filename, 'utf8'), filename);
+  // https://github.com/postcss/postcss/blob/master/docs/api.md#processorprocesscss-opts
+  const lazyResult = get(extractorOptions, fetch)
+    .process(CSSSource, Object.assign(processorOptions, {from: filename}));
 
-  const lazyResult = postcss(plugins.concat(
-    new Scope({generateScopedName: (name, _, css) => generateScopedName(name, filename, css)}),
-    terminalPlugins,
-    new Parser({ fetch, filename, trace }))
-  ).process(CSSSource, assign(lazyResultOpts, {from: rootRelativePath}));
-
+  // https://github.com/postcss/postcss/blob/master/docs/api.md#lazywarnings
   lazyResult.warnings().forEach(message => console.warn(message.text));
 
-  tokens = lazyResult.root.tokens;
   // updating cache
+  tokens = lazyResult.root.tokens;
   tokensByFile[filename] = tokens;
 
   if (postProcess) {
