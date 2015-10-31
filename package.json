@@ -47,7 +47,6 @@
   "scripts": {
     "start": "esw -w .",
     "lint": "eslint .",
-    "pretest": "npm run -s lint",
     "test": "mocha --compilers js:babel/register",
     "test:cov": "`npm bin`/babel-node `npm bin`/isparta cover --report text --report html `npm bin`/_mocha",
     "test:gen": "babel-node generate-tests",
@@ -73,6 +72,7 @@
   },
   "homepage": "https://github.com/css-modules/css-modules-require-hook",
   "pre-commit": [
+    "lint",
     "test"
   ]
 }
