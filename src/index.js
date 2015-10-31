@@ -30,6 +30,8 @@ export default function setup({ extensions: extraExtensions, preprocessCss, proc
   processorOptions = {to};
   preProcess = preprocessCss || identity;
   postProcess = processCss || null;
+  // clearing cache
+  tokensByFile = {};
 
   if (extraExtensions) {
     extraExtensions.forEach((extension) => hook(filename => fetch(filename, filename), extension));
