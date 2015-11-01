@@ -1,0 +1,35 @@
+._values_borders__dashed {
+  border: 4px dashed;
+}
+
+._values_colors__text-primary {
+  color: #f01;
+}
+._values_colors__bg-primary {
+  background-color: #f01;
+}
+
+._values_colors__text-secondary {
+  color: #2f2;
+}
+._values_colors__bg-secondary {
+  background-color: #2f2;
+}
+/* Imports without a "from" are just passed through */
+@import url('./old-skool.css');
+
+._values_source__foo {
+  box-shadow: 0 0 10px #f01;
+  border-color: #2f2;
+}
+
+@media (max-width: 599px) {
+  ._values_source__foo {
+    background: white;
+  }
+}
+@media (min-width: 600px) and (max-width: 959px) {
+  ._values_source__foo {
+    background: peru;
+  }
+}

@@ -8,13 +8,13 @@
   },
   "dependencies": {
     "debug": "^2.2.0",
+    "generic-names": "^1.0.0-beta",
     "icss-replace-symbols": "^1.0.2",
-    "lodash.assign": "^3.2.0",
+    "lodash.foreach": "^3.0.3",
     "lodash.identity": "^3.0.0",
     "lodash.isarray": "^3.0.4",
     "lodash.isfunction": "^3.0.6",
-    "lodash.isstring": "^3.0.1",
-    "lodash.pick": "^3.1.0"
+    "lodash.isstring": "^3.0.1"
   },
   "devDependencies": {
     "babel": "^5.8.20",
@@ -28,7 +28,7 @@
     "isparta": "^3.0.3",
     "lodash": "^3.10.1",
     "mocha": "^2.2.5",
-    "postcss": "^5.x",
+    "postcss": "^5.0.10",
     "postcss-modules-extract-imports": "^1.0.0",
     "postcss-modules-local-by-default": "^1.0.0",
     "postcss-modules-scope": "^1.0.0",
@@ -45,7 +45,6 @@
   "scripts": {
     "start": "esw -w .",
     "lint": "eslint .",
-    "pretest": "npm run -s lint",
     "test": "mocha --compilers js:babel/register",
     "test:cov": "`npm bin`/babel-node `npm bin`/isparta cover --report text --report html `npm bin`/_mocha",
     "test:gen": "babel-node generate-tests",
@@ -71,6 +70,7 @@
   },
   "homepage": "https://github.com/css-modules/css-modules-require-hook",
   "pre-commit": [
+    "lint",
     "test"
   ]
 }
