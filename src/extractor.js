@@ -1,5 +1,6 @@
 import postcss from 'postcss';
 import genericNames from 'generic-names';
+import { relative } from 'path';
 
 import Values from 'postcss-modules-values';
 import LocalByDefault from 'postcss-modules-local-by-default';
@@ -27,9 +28,15 @@ export default function extractor({
   use,
   rootDir: context = process.cwd(),
 } = {}, fetch) {
-  const scopedName = typeof generateScopedName !== 'function'
-    ? genericNames(generateScopedName || '[name]__[local]___[hash:base64:5]', {context})
-    : generateScopedName;
+  let scopedName;
+  if (generateScopedName) {
+    scopedName = typeof generateScopedName !== 'function'
+      ? genericNames(generateScopedName || '[name]__[local]___[hash:base64:5]', {context})
+      : generateScopedName;
+  } else {
+    // small fallback
+    scopedName = (local, filename) => Scope.generateScopedName(local, relative(context, filename));
+  }
 
   const plugins = (use || [
     ...prepend,

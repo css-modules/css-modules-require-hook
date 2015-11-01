@@ -5,5 +5,5 @@
   "medium": "(min-width: 600px) and (max-width: 959px)",
   "secondary": "#2f2",
   "blue": "#f01",
-  "foo": "source__foo___29gFW borders__dashed___1ai3w colors__text-secondary___3-tp0"
+  "foo": "_values_source__foo _values_borders__dashed _values_colors__text-secondary"
 }

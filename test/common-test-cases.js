@@ -65,7 +65,7 @@ describe('common-test-cases', () => {
         hook({rootDir: resolve('test/test-cases'), use: pipelines['test-cases']});
       });
 
-      it.skip('loader-core', done => {
+      it('loader-core', done => {
         const loader = new FileSystemLoader(resolve('test/test-cases'), pipelines['test-cases']);
 
         loader.fetch('localise-export/source.css', '/')
@@ -90,7 +90,7 @@ describe('common-test-cases', () => {
         hook({rootDir: resolve('test/test-cases'), use: pipelines['test-cases']});
       });
 
-      it.skip('loader-core', done => {
+      it('loader-core', done => {
         const loader = new FileSystemLoader(resolve('test/test-cases'), pipelines['test-cases']);
 
         loader.fetch('multiple-dependencies/source.css', '/')
@@ -116,7 +116,7 @@ describe('common-test-cases', () => {
         hook({rootDir: resolve('test/test-cases'), use: pipelines['test-cases']});
       });
 
-      it.skip('loader-core', done => {
+      it('loader-core', done => {
         const loader = new FileSystemLoader(resolve('test/test-cases'), pipelines['test-cases']);
 
         loader.fetch('multiple-sources/source1.css', '/').then(tokens1 => {
@@ -146,7 +146,7 @@ describe('common-test-cases', () => {
         hook({rootDir: resolve('test/test-cases'), use: pipelines['test-cases']});
       });
 
-      it.skip('loader-core', done => {
+      it('loader-core', done => {
         const loader = new FileSystemLoader(resolve('test/test-cases'), pipelines['test-cases']);
 
         loader.fetch('simple-export/source.css', '/')
@@ -171,7 +171,7 @@ describe('common-test-cases', () => {
         hook({rootDir: resolve('test/test-cases'), use: pipelines['test-cases']});
       });
 
-      it.skip('loader-core', done => {
+      it('loader-core', done => {
         const loader = new FileSystemLoader(resolve('test/test-cases'), pipelines['test-cases']);
 
         loader.fetch('single-import-export/source.css', '/')
@@ -196,7 +196,7 @@ describe('common-test-cases', () => {
         hook({rootDir: resolve('test/test-cases'), use: pipelines['test-cases']});
       });
 
-      it.skip('loader-core', done => {
+      it('loader-core', done => {
         const loader = new FileSystemLoader(resolve('test/test-cases'), pipelines['test-cases']);
 
         loader.fetch('values/source.css', '/')
@@ -225,7 +225,7 @@ describe('common-test-cases', () => {
         hook({rootDir: resolve('test/cssi'), use: pipelines['cssi']});
       });
 
-      it.skip('loader-core', done => {
+      it('loader-core', done => {
         const loader = new FileSystemLoader(resolve('test/cssi'), pipelines['cssi']);
 
         loader.fetch('interchange-format/source.css', '/')
@@ -250,7 +250,7 @@ describe('common-test-cases', () => {
         hook({rootDir: resolve('test/cssi'), use: pipelines['cssi']});
       });
 
-      it.skip('loader-core', done => {
+      it('loader-core', done => {
         const loader = new FileSystemLoader(resolve('test/cssi'), pipelines['cssi']);
 
         loader.fetch('pseudo-variables/source.css', '/')

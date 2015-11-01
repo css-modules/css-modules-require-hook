@@ -1,4 +1,4 @@
 {
-  "a": "source1__a___2iCl8 b__b___2rzkw d__d___2_axc c__c___3w6Q6",
-  "foo": "source2__foo___1bzDO b__b___2rzkw d__d___2_axc"
+  "a": "_multiple_sources_source1__a _multiple_sources_b__b _multiple_sources_d__d _multiple_sources_c__c",
+  "foo": "_multiple_sources_source2__foo _multiple_sources_b__b _multiple_sources_d__d"
 }
