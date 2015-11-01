@@ -56,16 +56,13 @@ hook({
 });
 ```
 
-### Specify custom function to build generic names
+### Specify custom pattern to build generic names
 
 ```javascript
 var hook = require('css-modules-require-hook');
 
-// specify your custom function
-function generateScopedName(exportedName, path) {/* your code here */}
-
 hook({
-  generateScopedName: generateScopedName,
+  generateScopedName: '[name]__[local]___[hash:base64:5]',
 });
 ```
 
@@ -164,6 +161,15 @@ Short alias for the [postcss-modules-extract-imports](https://github.com/css-mod
 ### `generateScopedName` function
 
 Short alias for the [postcss-modules-scope](https://github.com/css-modules/postcss-modules-scope) plugin's option. Helps you to specify the custom way to build generic names for the class selectors.
+You may also use a string pattern similar to the webpack's [css-loader](https://github.com/webpack/css-loader#local-scope).
+
+```javascript
+hook({
+  generateScopedName: '[name]__[local]___[hash:base64:5]'
+});
+```
+
+or
 
 ```javascript
 hook({
