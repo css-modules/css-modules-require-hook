@@ -5,6 +5,8 @@ import extractor from './extractor';
 import { readFileSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { removeQuotes } from './utility';
+import validate from './validate';
+import './guard';
 
 // cache
 let tokensByFile = {};
@@ -26,6 +28,7 @@ const debugSetup = debug('css-modules:setup');
  */
 export default function setup({ extensions: extraExtensions, preprocessCss, processCss, to, ...rest } = {}) {
   debugSetup(arguments[0]);
+  validate(arguments[0]);
   instance = extractor(rest, fetch);
   processorOptions = {to};
   preProcess = preprocessCss || identity;

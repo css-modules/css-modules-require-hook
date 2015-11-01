@@ -11,6 +11,7 @@ function resolveTo() {
 }
 
 let content =
+`import { dropCache } from '../utils/sugar';\n`+
 `import { equal } from 'assert';\n`+
 `import { readFileSync } from 'fs';\n`+
 `import { resolve } from 'path';\n`+
@@ -41,12 +42,13 @@ cases.forEach(dirname => {
       `\n`+
       `    describe('${testCase.replace(/-/g, ' ')}', () => {\n`+
       `      before(() => {\n`+
+      `        dropCache(resolve('test${sep + dirname + sep + testCase + sep}source.css'));\n`+
       `        expectedCSS = normalize(readFileSync(resolve('test${sep + dirname + sep + testCase + sep}expected.css'), 'utf8'));\n`+
       `        expectedTokens = JSON.parse(readFileSync(resolve('test${sep + dirname + sep + testCase + sep}expected.json'), 'utf8'));\n`+
       `        hook({rootDir: resolve('test${sep + dirname}'), use: pipelines['${dirname}']});\n`+
       `      });\n`+
       `\n`+
-      `      it('loader-core', done => {\n`+
+      `      it.skip('loader-core', done => {\n`+
       `        const loader = new FileSystemLoader(resolve('test${sep + dirname}'), pipelines['${dirname}']);\n`+
       `\n`+
       `        loader.fetch('${testCase + sep}source.css', '/')\n`+
@@ -69,12 +71,14 @@ cases.forEach(dirname => {
       `\n`+
       `    describe('${testCase.replace(/-/g, ' ')}', () => {\n`+
       `      before(() => {\n`+
+      `        dropCache(resolve('test${sep + dirname + sep + testCase + sep}source1.css'));\n`+
+      `        dropCache(resolve('test${sep + dirname + sep + testCase + sep}source2.css'));\n`+
       `        expectedCSS = normalize(readFileSync(resolve('test${sep + dirname + sep + testCase + sep}expected.css'), 'utf8'));\n`+
       `        expectedTokens = JSON.parse(readFileSync(resolve('test${sep + dirname + sep + testCase + sep}expected.json'), 'utf8'));\n`+
       `        hook({rootDir: resolve('test${sep + dirname}'), use: pipelines['${dirname}']});\n`+
       `      });\n`+
       `\n`+
-      `      it('loader-core', done => {\n`+
+      `      it.skip('loader-core', done => {\n`+
       `        const loader = new FileSystemLoader(resolve('test${sep + dirname}'), pipelines['${dirname}']);\n`+
       `\n`+
       `        loader.fetch('${testCase + sep}source1.css', '/').then(tokens1 => {\n`+

@@ -1,0 +1,24 @@
+@value borders: "./borders.css", breakpoints: "./breakpoints.css";
+@value small, medium from breakpoints;
+@value secondary, primary as blue from "./colors.css";
+
+/* Imports without a "from" are just passed through */
+@import url('./old-skool.css');
+
+.foo {
+  composes: dashed from borders;
+  composes: text-secondary from "./colors.css";
+  box-shadow: 0 0 10px blue;
+  border-color: secondary;
+}
+
+@media small {
+  .foo {
+    background: white;
+  }
+}
+@media medium {
+  .foo {
+    background: peru;
+  }
+}

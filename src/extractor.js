@@ -31,7 +31,7 @@ export default function extractor({
     generateScopedName = genericNames(generateScopedName || '[name]__[local]___[hash:base64:5]', {context});
   }
 
-  const plugins = use || [
+  const plugins = (use || [
     ...prepend,
     Values,
     mode
@@ -42,8 +42,7 @@ export default function extractor({
       : ExtractImports,
     new Scope({generateScopedName}),
     ...append,
-  ];
+  ]).concat(new Parser({fetch})); // no pushing in order to avoid the possible mutations
 
-  plugins.push(new Parser({fetch}));
   return postcss(plugins);
 }

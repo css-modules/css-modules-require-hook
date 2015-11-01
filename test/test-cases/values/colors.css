@@ -1,0 +1,16 @@
+@value primary: #f01;
+@value secondary: #2f2;
+
+.text-primary {
+  color: primary;
+}
+.bg-primary {
+  background-color: primary;
+}
+
+.text-secondary {
+  color: secondary;
+}
+.bg-secondary {
+  background-color: secondary;
+}
