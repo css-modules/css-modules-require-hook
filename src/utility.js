@@ -3,9 +3,9 @@ import isFunction from 'lodash.isfunction';
 import isString from 'lodash.isstring';
 
 const check = {
-  'array': isArray,
+  'array':    isArray,
   'function': isFunction,
-  'string': isString,
+  'string':   isString,
 };
 
 /**

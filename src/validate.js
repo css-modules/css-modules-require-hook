@@ -26,6 +26,6 @@ export default function validate(options = {}) {
 
     if (!types.split('|').some(type => is(type, options[rule]))) {
       throw new Error(format('should specify %s for the %s', types, rule));
-    };
+    }
   });
 }

@@ -1,4 +1,4 @@
-import { ok, equal, throws } from 'assert';
+import { ok, equal } from 'assert';
 import { is, removeQuotes } from '../src/utility';
 
 describe('utility', () => {
