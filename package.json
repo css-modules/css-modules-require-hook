@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "debug": "^2.2.0",
-    "generic-names": "^1.0.0",
+    "generic-names": "^1.0.1",
     "icss-replace-symbols": "^1.0.2",
     "lodash.foreach": "^3.0.3",
     "lodash.identity": "^3.0.0",
