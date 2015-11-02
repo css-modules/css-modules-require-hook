@@ -7,3 +7,4 @@ generate-tests.js
 src/
 test/
 utils/
+webpack.config.js
