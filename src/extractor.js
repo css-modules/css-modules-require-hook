@@ -6,7 +6,7 @@ import Values from 'postcss-modules-values';
 import LocalByDefault from 'postcss-modules-local-by-default';
 import ExtractImports from 'postcss-modules-extract-imports';
 import Scope from 'postcss-modules-scope';
-import Parser from './parser';
+import Parser from 'postcss-modules-parser';
 
 /**
  * @param  {array}           options.append

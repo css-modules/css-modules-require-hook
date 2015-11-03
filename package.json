@@ -14,7 +14,8 @@
     "lodash.identity": "^3.0.0",
     "lodash.isarray": "^3.0.4",
     "lodash.isfunction": "^3.0.6",
-    "lodash.isstring": "^3.0.1"
+    "lodash.isstring": "^3.0.1",
+    "postcss-modules-parser": "^1.0.1"
   },
   "devDependencies": {
     "babel": "^5.8.20",
