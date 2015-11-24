@@ -4,7 +4,6 @@ import identity from 'lodash.identity';
 import extractor from './extractor';
 import { readFileSync } from 'fs';
 import { dirname, resolve } from 'path';
-import { removeQuotes } from './utility';
 import validate from './validate';
 import './guard';
 
@@ -42,12 +41,11 @@ export default function setup({ extensions: extraExtensions, preprocessCss, proc
 }
 
 /**
- * @param  {string} _to  Absolute or relative path. Also can be path to the Node.JS module.
+ * @param  {string} to   Absolute or relative path. Also can be path to the Node.JS module.
  * @param  {string} from Absolute path.
  * @return {object}
  */
-function fetch(_to, from) {
-  const to = removeQuotes(_to);
+function fetch(to, from) {
   // getting absolute path to the processing file
   const filename = /\w/i.test(to[0])
     ? require.resolve(to)

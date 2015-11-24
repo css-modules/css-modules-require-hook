@@ -16,11 +16,3 @@ const check = {
 export function is(type, value) {
   return check[type](value);
 }
-
-/**
- * @param  {string} str
- * @return {string}
- */
-export function removeQuotes(str) {
-  return str.replace(/^["']|["']$/g, '');
-}

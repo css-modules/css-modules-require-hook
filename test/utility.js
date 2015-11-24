@@ -1,5 +1,5 @@
-import { ok, equal } from 'assert';
-import { is, removeQuotes } from '../src/utility';
+import { ok } from 'assert';
+import { is } from '../src/utility';
 
 describe('utility', () => {
   describe('is()', () => {
@@ -14,9 +14,5 @@ describe('utility', () => {
     it('should return true for a string', () => ok(is('string', '')));
 
     it('should return false for not a string', () => ok(!is('string', null)));
-  });
-
-  describe('removeQuotes()', () => {
-    it('should remove quotes', () => equal(removeQuotes('"TEST"'), 'TEST'));
   });
 });
