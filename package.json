@@ -1,6 +1,6 @@
 {
   "name": "css-modules-require-hook",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "A require hook to compile CSS Modules on the fly",
   "main": "index.js",
   "engines": {
@@ -10,6 +10,7 @@
     "debug": "^2.2.0",
     "generic-names": "^1.0.1",
     "icss-replace-symbols": "^1.0.2",
+    "lodash.assign": "^3.2.0",
     "lodash.foreach": "^3.0.3",
     "lodash.identity": "^3.0.0",
     "lodash.isarray": "^3.0.4",

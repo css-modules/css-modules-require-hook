@@ -1,3 +1,4 @@
+import assign from 'lodash.assign';
 import debug from 'debug';
 import hook from './hook';
 import identity from 'lodash.identity';
@@ -61,7 +62,7 @@ function fetch(to, from) {
   debugFetch({cache: false, filename});
   const CSSSource = preProcess(readFileSync(filename, 'utf8'), filename);
   // https://github.com/postcss/postcss/blob/master/docs/api.md#processorprocesscss-opts
-  const lazyResult = instance.process(CSSSource, Object.assign(processorOptions, {from: filename}));
+  const lazyResult = instance.process(CSSSource, assign(processorOptions, {from: filename}));
 
   // https://github.com/postcss/postcss/blob/master/docs/api.md#lazywarnings
   lazyResult.warnings().forEach(message => console.warn(message.text));
