@@ -53,7 +53,7 @@
     "fixture": "webpack",
     "start": "esw -w .",
     "lint": "eslint .",
-    "test": "mocha --compilers js:babel/register",
+    "test": "mocha --compilers js:babel/register --timeout 5000",
     "test:cov": "`npm bin`/babel-node `npm bin`/isparta cover --report text --report html `npm bin`/_mocha",
     "test:gen": "babel-node generate-tests",
     "build": "babel src --out-dir dist",

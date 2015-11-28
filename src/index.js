@@ -67,9 +67,15 @@ function fetch(to, from) {
   // https://github.com/postcss/postcss/blob/master/docs/api.md#lazywarnings
   lazyResult.warnings().forEach(message => console.warn(message.text));
 
-  // updating cache
   tokens = lazyResult.root.tokens;
-  tokensByFile[filename] = tokens;
+
+  if (process.env.NODE_ENV !== 'development') {
+    // updating cache
+    tokensByFile[filename] = tokens;
+  } else {
+    // clearing cache in development mode
+    delete require.cache[filename];
+  }
 
   if (postProcess) {
     postProcess(lazyResult.css, filename);

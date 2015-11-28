@@ -32,6 +32,14 @@ $ npm i css-modules-require-hook
 
 In this section I've tried to cover the common cases of usage.
 
+### Development mode
+
+Usually, Node.js caches all the `require` calls by default. In order to invalidate cache for the purpose of development you should set the environment variable `NODE_ENV` to `development`. For example:
+
+```bash
+$ NODE_ENV=development node server.js
+```
+
 ### Basic example
 
 Basically to attach the require hook you need to require this module. If you need to adjust it see the tuning section below.
