@@ -1,0 +1,18 @@
+.common
+{
+  padding: 0 13px;
+
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  white-space: nowrap;
+
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  background: #ffdb4d;
+
+  font-family: arial, sans-serif;
+  font-size: 13px;
+  line-height: 28px;
+}

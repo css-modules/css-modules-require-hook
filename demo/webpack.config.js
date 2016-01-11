@@ -3,8 +3,10 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 
+const config = require('./package').config;
+
 module.exports = {
-  entry: path.resolve('browser.js'),
+  entry: path.resolve('app/browser.js'),
 
   output: {
     filename: 'browser.js',
@@ -14,14 +16,20 @@ module.exports = {
   module: {
     loaders: [
       {
+        test: /\.js$/i,
+        exclude: /node_modules/,
+        loader: 'babel?presets[]=es2015,presets[]=react,presets[]=stage-0',
+      },
+      {
         test: /\.css$/i,
-        loader: ExtractTextPlugin.extract('style', 'css?modules'),
+        loader: ExtractTextPlugin.extract('style',
+          `css?modules&localIdentName=${config.css}`),
       },
     ],
   },
 
   plugins: [
-    new ExtractTextPlugin('result.css', {
+    new ExtractTextPlugin('common.css', {
       allChunks: true
     }),
   ],
