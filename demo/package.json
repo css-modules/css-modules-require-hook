@@ -1,0 +1,16 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "Universal usage example",
+  "main": "worker.js",
+  "scripts": {
+    "compile": "webpack",
+    "start": "node worker",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "css-modules"
+  ],
+  "author": "Alexey Litvinov",
+  "license": "MIT"
+}
