@@ -206,4 +206,4 @@ Short alias for the [postcss-modules-local-by-default](https://github.com/css-mo
 
 ## Links
 
-- Electon support: [css-modules-electron](https://github.com/KenPowers/css-modules-electron)
+- Electron support: [css-modules-electron](https://github.com/KenPowers/css-modules-electron)
