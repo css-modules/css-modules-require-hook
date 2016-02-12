@@ -1,6 +1,5 @@
 import assign from 'lodash.assign';
 import debug from 'debug';
-import hook from './hook';
 import identity from 'lodash.identity';
 import extractor from './extractor';
 import { readFileSync } from 'fs';
@@ -83,5 +82,3 @@ function fetch(to, from) {
 
   return tokens;
 }
-
-hook(filename => fetch(filename, filename), '.css');
