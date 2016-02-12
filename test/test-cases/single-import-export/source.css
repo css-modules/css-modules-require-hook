@@ -1,4 +1,0 @@
-.localName {
-  composes: blackShadow redBorder from "./colors.css";
-  color: red;
-}

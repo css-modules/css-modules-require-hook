@@ -1,4 +1,0 @@
-.b {
-  composes: d from "./d.css";
-  color: #bbb;
-}
