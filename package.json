@@ -1,63 +1,15 @@
 {
   "name": "css-modules-require-hook",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "description": "A require hook to compile CSS Modules on the fly",
-  "main": "index.js",
+  "main": "lib/index.js",
   "engines": {
     "node": ">=0.12"
   },
-  "dependencies": {
-    "debug": "^2.2.0",
-    "generic-names": "^1.0.1",
-    "icss-replace-symbols": "^1.0.2",
-    "lodash.assign": "^3.2.0",
-    "lodash.foreach": "^3.0.3",
-    "lodash.identity": "^3.0.0",
-    "lodash.isarray": "^3.0.4",
-    "lodash.isfunction": "^3.0.6",
-    "lodash.isstring": "^3.0.1",
-    "postcss-modules-parser": "^1.1.0"
-  },
-  "devDependencies": {
-    "babel": "^5.8.20",
-    "babel-eslint": "^4.0.5",
-    "css-loader": "^0.21.0",
-    "css-modules-loader-core": "^1.0.0",
-    "eslint": "^1.0.0",
-    "eslint-config-airbnb": "0.0.7",
-    "eslint-config-airbnb-lite": "^1.0.3",
-    "eslint-watch": "^1.2.4",
-    "extract-text-webpack-plugin": "^0.8.2",
-    "in-publish": "^2.0.0",
-    "isparta": "^3.0.3",
-    "lodash": "^3.10.1",
-    "mocha": "^2.2.5",
-    "postcss": "^5.0.10",
-    "postcss-loader": "^0.7.0",
-    "postcss-modules-extract-imports": "^1.0.0",
-    "postcss-modules-local-by-default": "^1.0.0",
-    "postcss-modules-scope": "^1.0.0",
-    "postcss-modules-values": "^1.1.0",
-    "precommit-hook": "^3.0.0",
-    "style-loader": "^0.13.0",
-    "webpack": "^1.12.2"
-  },
-  "peerDependencies": {
-    "postcss": "^5.x",
-    "postcss-modules-extract-imports": "^1.0.0",
-    "postcss-modules-local-by-default": "^1.0.0",
-    "postcss-modules-scope": "^1.0.0",
-    "postcss-modules-values": "^1.1.0"
-  },
   "scripts": {
-    "fixture": "webpack",
-    "start": "esw -w .",
-    "lint": "eslint .",
-    "test": "mocha --compilers js:babel/register --timeout 5000",
-    "test:cov": "`npm bin`/babel-node `npm bin`/isparta cover --report text --report html `npm bin`/_mocha",
-    "test:gen": "babel-node generate-tests",
-    "build": "babel src --out-dir dist",
-    "prepublish": "in-publish && npm run -s build || in-install"
+    "prepublish": "in-publish && npm run -s build || in-install",
+    "test": "mocha --require test/setup.js --ui tdd test/*/*.js --harmony_destructuring --harmony_spread_arrays --use_strict",
+    "test:w": "mocha --require test/setup.js --ui tdd --watch test/*/*.js --harmony_destructuring --harmony_spread_arrays --use_strict"
   },
   "repository": {
     "type": "git",
@@ -77,8 +29,21 @@
     "url": "https://github.com/css-modules/css-modules-require-hook/issues"
   },
   "homepage": "https://github.com/css-modules/css-modules-require-hook",
-  "pre-commit": [
-    "lint",
-    "test"
-  ]
+  "pre-commit": [],
+  "dependencies": {
+    "debug": "^2.2.0",
+    "generic-names": "^1.0.1",
+    "icss-replace-symbols": "^1.0.2",
+    "lodash": "^4.3.0",
+    "postcss": "^5.0.15",
+    "postcss-modules-extract-imports": "^1.0.0",
+    "postcss-modules-local-by-default": "^1.0.1",
+    "postcss-modules-parser": "^1.1.0",
+    "postcss-modules-scope": "^1.0.0",
+    "postcss-modules-values": "^1.1.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.3"
+  }
 }
