@@ -2,13 +2,13 @@ const detachHook = require('../sugar').detachHook;
 const dropCache = require('../sugar').dropCache;
 const identity = require('lodash').identity;
 
-suite('api/processCss()', () => {
-  const processCss = spy(identity);
+suite('api/preprocessCss', () => {
+  const preprocessCss = spy(identity);
 
-  test('should be called', () => assert(processCss.called));
+  test('should be called', () => assert(preprocessCss.called));
 
   setup(() => {
-    hook({processCss});
+    hook({preprocessCss});
     require('./fixture/oceanic.css');
   });
 

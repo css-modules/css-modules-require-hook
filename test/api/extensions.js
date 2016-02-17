@@ -1,7 +1,6 @@
+const detachHook = require('../sugar').detachHook;
 const dropCache = require('../sugar').dropCache;
-const dropHook = require('../sugar').dropHook;
 const identity = require('lodash').identity;
-const spy = require('sinon').spy;
 
 suite('api/extensions', () => {
   suite('uses .css by default', () => {
@@ -14,7 +13,7 @@ suite('api/extensions', () => {
 
     teardown(() => {
       dropCache('./api/fixture/oceanic.css');
-      dropHook('.css');
+      detachHook('.css');
     });
   });
 });
