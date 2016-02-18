@@ -1,8 +1,0 @@
-dist
-coverage
-node_modules
-
-generate-tests.js
-test/cases/webpack/*
-test/common-test-cases.js
-webpack.config.js
