@@ -12,6 +12,7 @@ function describeTest(testCase) {
     return;
   }
 
+  // @todo add a small shortcut to choose certain tests
   test(basename(testCase), () => {
     const expected = JSON.parse(readfile(testCase, 'expected.json'));
     assert.deepEqual(require(resolve(testCase, 'source.css')), expected);
