@@ -7,8 +7,9 @@
     "node": ">=0.12"
   },
   "scripts": {
-    "test": "NODE_PATH=$(pwd)/test/tokens/node_modules mocha --require test/setup.js --ui tdd test/*/*.js --harmony_destructuring --harmony_spread_arrays --use_strict",
-    "test:w": "NODE_PATH=$(pwd)/test/tokens/node_modules mocha --require test/setup.js --ui tdd --watch test/*/*.js --harmony_destructuring --harmony_spread_arrays --use_strict"
+    "test": "NODE_PATH=$(pwd)/test/tokens/node_modules $npm_package_scripts_test_unit --harmony_destructuring --harmony_spread_arrays --use_strict",
+    "test:w": "NODE_PATH=$(pwd)/test/tokens/node_modules $npm_package_scripts_test_unit --watch --harmony_destructuring --harmony_spread_arrays --use_strict",
+    "test:unit": "mocha --require test/setup.js --ui tdd test/*/*.js"
   },
   "repository": {
     "type": "git",
