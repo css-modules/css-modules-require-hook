@@ -1,4 +1,5 @@
 const basename = require('path').basename;
+const detachHook = require('../sugar').detachHook;
 const readdirSync = require('fs').readdirSync;
 const readFileSync = require('fs').readFileSync;
 const resolve = require('path').resolve;
@@ -42,5 +43,6 @@ function readfile(file) {
 
 suite('tokens', () => {
   setup(() => hook({}));
+  teardown(() => detachHook('.css'));
   readdir('./cases').forEach(describeTest);
 });

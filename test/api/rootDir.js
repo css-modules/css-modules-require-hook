@@ -19,8 +19,8 @@ suite('api/rootDir', () => {
     });
 
     teardown(() => {
-      dropCache('./api/fixture/oceanic.css');
       detachHook('.css');
+      dropCache('./api/fixture/oceanic.css');
     });
   });
 });

@@ -13,7 +13,7 @@ suite('api/preprocessCss', () => {
   });
 
   teardown(() => {
-    dropCache('./api/fixture/oceanic.css');
     detachHook('.css');
+    dropCache('./api/fixture/oceanic.css');
   });
 });

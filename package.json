@@ -33,6 +33,7 @@
   "dependencies": {
     "debug": "^2.2.0",
     "generic-names": "^1.0.1",
+    "glob-to-regexp": "^0.1.0",
     "icss-replace-symbols": "^1.0.2",
     "lodash": "^4.3.0",
     "lookup-fs": "^1.0.0",

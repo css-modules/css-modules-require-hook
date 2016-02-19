@@ -15,8 +15,8 @@ suite('api/append', () => {
     });
 
     teardown(() => {
-      dropCache('./api/fixture/oceanic.css');
       detachHook('.css');
+      dropCache('./api/fixture/oceanic.css');
     });
   });
 });
