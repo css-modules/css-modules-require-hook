@@ -1,12 +1,10 @@
+const dirname = require('path').dirname;
 const hook = require('.');
-const lookup = require('lookup-fs');
+const seekout = require('seekout');
 
-// should it be a sync call?
-lookup('cmrh.conf.js', module.parent.filename, (er, cssModulesFilePath) => {
-  if (er) {
-    throw new Error('Unable to find cmrh.conf.js');
-  }
+const preset = seekout('cmrh.conf.js', dirname(module.parent.filename));
+if (!preset) {
+  throw new Error('Unable to find cmrh.conf.js');
+}
 
-  const preset = require(cssModulesFilePath);
-  hook(preset);
-});
+hook(require(preset));
