@@ -8,9 +8,10 @@
   },
   "scripts": {
     "build": "babel lib --out-dir lib && babel preset.js --out-file preset.js",
-    "test": "NODE_PATH=$(pwd)/test/tokens/node_modules $npm_package_scripts_test_unit --harmony_destructuring --harmony_spread_arrays --use_strict",
-    "test:w": "NODE_PATH=$(pwd)/test/tokens/node_modules $npm_package_scripts_test_unit --watch --harmony_destructuring --harmony_spread_arrays --use_strict",
+    "test": "npm run test:babel",
     "test:babel": "NODE_PATH=$(pwd)/test/tokens/node_modules $npm_package_scripts_test_unit --compilers js:babel-register",
+    "test:node": "NODE_PATH=$(pwd)/test/tokens/node_modules $npm_package_scripts_test_unit --harmony_destructuring --harmony_spread_arrays --use_strict",
+    "test:watch": "NODE_PATH=$(pwd)/test/tokens/node_modules $npm_package_scripts_test_unit --watch --harmony_destructuring --harmony_spread_arrays --use_strict",
     "test:unit": "mocha --require test/setup.js --ui tdd test/*/*.js"
   },
   "repository": {
