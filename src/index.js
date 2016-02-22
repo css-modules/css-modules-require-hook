@@ -10,7 +10,8 @@ import './guard';
 
 // cache
 let tokensByFile = {};
-// global
+// globals;
+let debugMode = process.env.NODE_ENV !== 'development';
 let instance = extractor({}, fetch);
 let processorOptions = {};
 let preProcess = identity;
@@ -26,7 +27,7 @@ const debugSetup = debug('css-modules:setup');
  * @param  {string}   options.to
  * @param  {object}   options.rest
  */
-export default function setup({ extensions: extraExtensions, preprocessCss, processCss, to, ...rest } = {}) {
+export default function setup({ extensions: extraExtensions, preprocessCss, processCss, to, devMode,  ...rest } = {}) {
   debugSetup(arguments[0]);
   validate(arguments[0]);
   instance = extractor(rest, fetch);
@@ -35,6 +36,11 @@ export default function setup({ extensions: extraExtensions, preprocessCss, proc
   postProcess = processCss || null;
   // clearing cache
   tokensByFile = {};
+
+  // debug option is preferred NODE_ENV === 'development'
+  if (typeof devMode !== 'undefined') {
+    debugMode = devMode;
+  }
 
   if (extraExtensions) {
     extraExtensions.forEach((extension) => hook(filename => fetch(filename, filename), extension));
@@ -69,7 +75,7 @@ function fetch(to, from) {
 
   tokens = lazyResult.root.tokens;
 
-  if (process.env.NODE_ENV !== 'development') {
+  if (!debugMode) {
     // updating cache
     tokensByFile[filename] = tokens;
   } else {
