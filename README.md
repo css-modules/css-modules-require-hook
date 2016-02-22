@@ -228,6 +228,7 @@ Short alias for the [postcss-modules-local-by-default](https://github.com/css-mo
 
 [debug](https://www.npmjs.com/package/debug) package is used for debugging. So to turn it on simply specify the **DEBUG** environment variable:
 - `DEBUG=css-modules:fetch` &mdash; to see resolved paths to the files.
+- `DEBUG=css-modules:preset` &mdash; to see whether config was found or not.
 - `DEBUG=css-modules:setup` &mdash; to see the new options list.
 - `DEBUG=css-modules:*` &mdash; to see everything.
 
