@@ -40,6 +40,8 @@ Usually, Node.js caches all the `require` calls by default. In order to invalida
 $ NODE_ENV=development node server.js
 ```
 
+Still you can use `devMode` option (see below) to override behavior which is imposed by environment variable.
+
 ### Basic example
 
 Basically to attach the require hook you need to require this module. If you need to adjust it see the tuning section below.
@@ -147,6 +149,16 @@ hook({
    * @param  {string} filepath Absolute path to the file
    */
   processCss: function (css, filepath) { /* */ }
+});
+```
+
+### `devMode` boolean
+
+Helps you to invalidate cache of all `require` calls. Usually used for the development purpose. Also overrides behavior, imposed by `NODE_ENV` environment variable. For example:
+
+```bash
+hook({
+  devMode: false,
 });
 ```
 
