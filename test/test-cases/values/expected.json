@@ -1,9 +1,0 @@
-{
-  "borders": "\"./borders.css\"",
-  "breakpoints": "\"./breakpoints.css\"",
-  "small": "(max-width: 599px)",
-  "medium": "(min-width: 600px) and (max-width: 959px)",
-  "secondary": "#2f2",
-  "blue": "#f01",
-  "foo": "_values_source__foo _values_borders__dashed _values_colors__text-secondary"
-}

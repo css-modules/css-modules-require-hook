@@ -14,13 +14,7 @@ Compiling in runtime, [universal](https://medium.com/@mjackson/universal-javascr
 
 ## Requirements
 
-To use this tool we require [Node.js v0.12.x](https://github.com/nodejs/node) (or higher) and several modules to be installed.
-
-- [postcss](https://github.com/postcss/postcss) version 5 or higher
-- [postcss-modules-values](https://github.com/css-modules/postcss-modules-values)
-- [postcss-modules-extract-imports](https://github.com/css-modules/postcss-modules-extract-imports)
-- [postcss-modules-local-by-default](https://github.com/css-modules/postcss-modules-local-by-default)
-- [postcss-modules-scope](https://github.com/css-modules/postcss-modules-scope)
+To use this tool we require [Node.js v0.12.x](https://github.com/nodejs/node) (or higher).
 
 ## Installation
 
@@ -30,7 +24,34 @@ $ npm i css-modules-require-hook
 
 ## Usage
 
-In this section I've tried to cover the common cases of usage.
+Now, there are two ways to attach hook: manually or using preset file.
+
+The first one allows you to pass options manually after module was required. Example:
+
+```javascript
+const hook = require('css-modules-require-hook');
+
+hook({
+  generateScopedName: '[name]__[local]___[hash:base64:5]',
+});
+
+// const styles = require('./icon.css');
+```
+
+The second one allows you to move options to the separate file `cmrh.conf.js`. Config file should be located in the same directory where executor is or in its ancestor directories. In that case hook will be attached right after the `css-modules-require-hook/preset` module will be required. Example:
+
+```javascript
+// cmrh.conf.js
+module.exports = {
+  generateScopedName: '[name]__[local]___[hash:base64:5]',
+};
+```
+
+```javascript
+require('css-modules-require-hook/preset');
+
+// const styles = require('./icon.css');
+```
 
 ### Development mode
 
@@ -41,16 +62,6 @@ $ NODE_ENV=development node server.js
 ```
 
 Still you can use `devMode` option (see below) to override behavior which is imposed by environment variable.
-
-### Basic example
-
-Basically to attach the require hook you need to require this module. If you need to adjust it see the tuning section below.
-
-```javascript
-require('css-modules-require-hook');
-
-// var styles = require('./icon.css');
-```
 
 ### Adding custom PostCSS plugins
 
@@ -166,6 +177,10 @@ hook({
 
 Attach the require hook to additional file extensions (for example `['.scss']`).
 
+### `ignore` function|regex|string
+
+Provides possibility to exclude particular files from processing. Supports glob and regular expressions syntax. Also you may provide custom function.
+
 ### `rootDir` string
 
 Provides absolute path to the project directory. Providing this will result in better generated class names. It can be obligatory, if you run require hook and build tools (like [css-modulesify](https://github.com/css-modules/css-modulesify)) from different working directories.
@@ -213,6 +228,7 @@ Short alias for the [postcss-modules-local-by-default](https://github.com/css-mo
 
 [debug](https://www.npmjs.com/package/debug) package is used for debugging. So to turn it on simply specify the **DEBUG** environment variable:
 - `DEBUG=css-modules:fetch` &mdash; to see resolved paths to the files.
+- `DEBUG=css-modules:preset` &mdash; to see whether config was found or not.
 - `DEBUG=css-modules:setup` &mdash; to see the new options list.
 - `DEBUG=css-modules:*` &mdash; to see everything.
 

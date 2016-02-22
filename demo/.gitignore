@@ -1,3 +1,5 @@
+static/
+
 # Logs
 logs
 *.log
@@ -28,3 +30,6 @@ node_modules/*
 
 # added automatically by precommit-hook as defaults
 .jshint*
+
+dist/
+!node_modules/awesome-theme
