@@ -8,8 +8,8 @@ const preset = seekout('cmrh.conf.js', dirname(module.parent.filename));
 
 if (!preset) {
   debug('failure');
-  return void hook({});
+  hook({});
+} else {
+  debug('success');
+  hook(require(preset));
 }
-
-debug('success');
-hook(require(preset));
