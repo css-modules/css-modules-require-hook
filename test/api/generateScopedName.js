@@ -1,6 +1,7 @@
 const detachHook = require('../sugar').detachHook;
 const dropCache = require('../sugar').dropCache;
 const identity = require('lodash').lodash;
+const resolve = require('path').resolve;
 
 suite('api/generateScopedName', () => {
   suite('using function', () => {
@@ -19,7 +20,7 @@ suite('api/generateScopedName', () => {
     test('should provide selector, filepath and source to the function', () => {
       assert.deepEqual(args, [
         'color',
-        '/Users/sullenor/Documents/repos/css-modules-require-hook/test/api/fixture/oceanic.css',
+        resolve('test/api/fixture/oceanic.css'),
         '.color\n{\n  background: #1e2a35;\n}\n',
       ]);
     });
