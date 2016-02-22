@@ -26,7 +26,7 @@ $ npm i css-modules-require-hook
 
 Now, there are two ways to attach hook: manually or using preset file.
 
-The first one allows you to pass options manually after module was required, to make it work. Example:
+The first one allows you to pass options manually after module was required. Example:
 
 ```javascript
 const hook = require('css-modules-require-hook');
@@ -38,7 +38,7 @@ hook({
 // const styles = require('./icon.css');
 ```
 
-The second one allows you to move options to separated file `cmrh.conf.js`, which should be located in your working directory (`process.cwd()`) or in its ancestors. Example:
+The second one allows you to move options to the separate file `cmrh.conf.js`. Config file should be located in the same directory where executor is or in its ancestor directories. In that case hook will be attached right after the `css-modules-require-hook/preset` module will be required. Example:
 
 ```javascript
 // cmrh.conf.js
