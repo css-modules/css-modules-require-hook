@@ -177,6 +177,10 @@ hook({
 
 Attach the require hook to additional file extensions (for example `['.scss']`).
 
+### `ignore` function|regex|string
+
+Provides possibility to exclude particular files from processing. Supports glob and regular expressions syntax. Also you may provide custom function.
+
 ### `rootDir` string
 
 Provides absolute path to the project directory. Providing this will result in better generated class names. It can be obligatory, if you run require hook and build tools (like [css-modulesify](https://github.com/css-modules/css-modulesify)) from different working directories.
