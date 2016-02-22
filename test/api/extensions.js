@@ -16,4 +16,38 @@ suite('api/extensions', () => {
       dropCache('./api/fixture/oceanic.css');
     });
   });
+
+  suite('uses provided extension', () => {
+    test('should provide tokens', () => {
+      const tokens = require('./fixture/oceanic.css');
+      assert(tokens);
+    });
+
+    setup(() => hook({extensions: '.css'}));
+
+    teardown(() => {
+      detachHook('.css');
+      dropCache('./api/fixture/oceanic.css');
+    });
+  });
+
+  suite('uses multiple extensions', () => {
+    test('should provide tokens', () => {
+      const tokens = require('./fixture/oceanic.css');
+      assert(tokens);
+    });
+
+    test('should provide tokens', () => {
+      const tokens = require('./fixture/oceanic.scss');
+      assert(tokens);
+    });
+
+    setup(() => hook({extensions: ['.css', '.scss']}));
+
+    teardown(() => {
+      detachHook('.css');
+      dropCache('./api/fixture/oceanic.css');
+      dropCache('./api/fixture/oceanic.scss');
+    });
+  });
 });
