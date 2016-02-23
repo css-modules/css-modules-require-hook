@@ -1,16 +1,13 @@
 'use strict';
 
 const express = require('express');
-const hook = require('css-modules-require-hook');
 const path = require('path');
 const viewEngine = require('./view-engine');
 
 const config = require('../package').config;
 const app = express();
 
-hook({
-  generateScopedName: config.css,
-});
+require('css-modules-require-hook/preset');
 
 // setting rendering engine
 app.engine('js', viewEngine);

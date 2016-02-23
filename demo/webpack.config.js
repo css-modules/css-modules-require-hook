@@ -1,16 +1,17 @@
 'use strict';
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const path = require('path');
+const NpmInstallPlugin = require('npm-install-webpack-plugin');
+const resolve = require('path').resolve;
 
 const config = require('./package').config;
 
 module.exports = {
-  entry: path.resolve('app/browser.js'),
+  entry: resolve('app/browser.js'),
 
   output: {
     filename: 'browser.js',
-    path: path.resolve('static'),
+    path: resolve('static'),
   },
 
   module: {
@@ -31,6 +32,11 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin('common.css', {
       allChunks: true
+    }),
+    new NpmInstallPlugin({
+      cacheMin: 999999,
+      saveDev: true,
+      saveExact: true,
     }),
   ],
 };
