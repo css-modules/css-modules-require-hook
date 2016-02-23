@@ -7,6 +7,9 @@ const ReactDOM = require('react-dom/server');
 
 const doctype = '<!doctype html>';
 
+/**
+ * @param {object} view
+ */
 function dropCache(view) {
   const detectView = new RegExp(`^${view}`);
 
@@ -20,6 +23,11 @@ babel({
   only: /components/,
 });
 
+/**
+ * @param {string}   file
+ * @param {object}   opts
+ * @param {function} cb
+ */
 module.exports = function viewEngine(file, opts, cb) {
   let markup = doctype;
 
