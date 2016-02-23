@@ -1,0 +1,26 @@
+:global(html)
+{
+  height: 100%;
+}
+
+.page
+{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  /*align-items: center;*/
+
+  min-height: 100%;
+  margin: 0;
+  /*background: #efe0b9;*/
+
+  background: #fff;
+}
+
+.wrapper
+{
+  margin: 30px;
+
+  text-align: left;
+}

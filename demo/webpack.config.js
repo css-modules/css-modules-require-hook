@@ -7,10 +7,10 @@ const resolve = require('path').resolve;
 const config = require('./package').config;
 
 module.exports = {
-  entry: resolve('app/browser.js'),
+  entry: resolve('components/Page.js'),
 
   output: {
-    filename: 'browser.js',
+    filename: '_.js',
     path: resolve('static'),
   },
 
@@ -24,10 +24,15 @@ module.exports = {
       {
         test: /\.css$/i,
         loader: ExtractTextPlugin.extract('style',
-          `css?modules&localIdentName=${config.css}`),
+          `css?modules&localIdentName=${config.css}!postcss`),
       },
     ],
   },
+
+  postcss: [
+    require('postcss-font-magician'),
+    require('autoprefixer'),
+  ],
 
   plugins: [
     new ExtractTextPlugin('common.css', {
@@ -39,4 +44,10 @@ module.exports = {
       saveExact: true,
     }),
   ],
+
+  externals: [
+    {
+      react: true,
+    },
+  ]
 };

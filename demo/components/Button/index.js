@@ -1,6 +1,6 @@
 import React from 'react';
 import base from './Button.css';
 
-export default ({ styles = base, ..._ }) => (
-  <button { ..._ } className={ styles.common }/>
+export default ({ href = '#', styles = base, ..._ }) => (
+  <a { ..._ } className={ styles.common } href={ href }/>
 );

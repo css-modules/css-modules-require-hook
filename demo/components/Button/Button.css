@@ -1,18 +1,29 @@
-.common
+.common,
+.common:active
 {
-  padding: 0 13px;
+  display: inline-block;
+
+  padding: 0 11px;
 
   cursor: pointer;
   user-select: none;
+  transition: all .3s;
   text-align: center;
   white-space: nowrap;
+  text-decoration: none;
 
+  color: #fff;
   border: none;
-  border-radius: 3px;
+  border-radius: 5px;
   outline: none;
-  background: #ffdb4d;
+  background: #43a047;
+  box-shadow: 0 5px 0 #2e7d32;
 
-  font-family: arial, sans-serif;
-  font-size: 13px;
-  line-height: 28px;
+  font: normal 20px/38px Roboto;
+}
+
+.common:hover
+{
+  background: #4caf50;
+  box-shadow: 0 5px 0 #388e3c;
 }
