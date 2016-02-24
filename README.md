@@ -1,7 +1,7 @@
 css-modules-require-hook
 ========================
 
-The require hook compiles [CSS Modules](https://github.com/css-modules/css-modules) in runtime. This is similar to Babel's [babel/register](https://babeljs.io/docs/usage/require/).
+The require hook compiles [CSS Modules](https://github.com/css-modules/css-modules) in runtime. This is similar to Babel's [babel/register](https://babeljs.io/docs/usage/require/). See the example: [demo](demo).
 
 ## What is CSS Modules
 
@@ -235,3 +235,7 @@ Short alias for the [postcss-modules-local-by-default](https://github.com/css-mo
 ## Links
 
 - Electron support: [css-modules-electron](https://github.com/KenPowers/css-modules-electron)
+
+## License
+
+> The MIT License
