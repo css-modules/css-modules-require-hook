@@ -1,27 +1,18 @@
 'use strict';
 
 const babel = require('babel-core/register');
-const lodash = require('lodash');
+const forEach = require('lodash').forEach;
 const React = require('react');
 const ReactDOM = require('react-dom/server');
 
 const doctype = '<!doctype html>';
 
-/**
- * @param {object} view
- */
-function dropCache(view) {
-  const detectView = new RegExp(`^${view}`);
-
-  lodash.forEach(require.cache, (view, identity) => {
-    detectView.test(view.filename)
-      && delete require.cache[identity];
-  });
-}
-
 babel({
   only: /components/,
 });
+
+// teaches node.js to load css files
+require('css-modules-require-hook/preset');
 
 /**
  * @param {string}   file
@@ -44,3 +35,15 @@ module.exports = function viewEngine(file, opts, cb) {
   dropCache(opts.settings.views);
   cb(null, markup);
 };
+
+/**
+ * @param {object} view
+ */
+function dropCache(view) {
+  const detectView = new RegExp(`^${view}`);
+
+  forEach(require.cache, (view, identity) => {
+    detectView.test(view.filename)
+      && delete require.cache[identity];
+  });
+}

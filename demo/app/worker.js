@@ -7,9 +7,6 @@ const viewEngine = require('./view-engine');
 const config = require('../package').config;
 const app = express();
 
-// teaches node.js to load css files
-require('css-modules-require-hook/preset');
-
 // sets react rendering engine
 app.engine('js', viewEngine);
 app.set('views', path.join(__dirname, '../components'));

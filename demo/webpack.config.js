@@ -30,6 +30,7 @@ module.exports = {
   },
 
   postcss: [
+    // small sugar for CSS
     require('postcss-font-magician'),
     require('autoprefixer'),
   ],
