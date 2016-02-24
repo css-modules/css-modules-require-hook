@@ -19,14 +19,14 @@ Open <a href="http://localhost:3000/" target="_blank">http://localhost:3000/</a>
 
 ## Detailed description
 
-In short [CSS Modules](https://github.com/css-modules/css-modules) provide modularity with generated class names. Therefore, generated names should be present in CSS styles and in templates which form resulting html. Since, we talk about server rendering in the current example I'll show you how to set require hook to generate the same names in runtime as the CSS styles.
+In short [CSS&nbsp;Modules](https://github.com/css-modules/css-modules) provide modularity with generated class names. Therefore, generated names should be present in CSS styles and in templates which form resulting html. Since, we talk about server rendering in the current example I'll show you how to set require hook to generate the same names in runtime as the CSS styles.
 
 
 ### Frontend
 
 The modern frontend is so tough that you have to use particular bundler systems in order to generate a simple CSS file. My favourite one is [webpack](https://webpack.github.io/), so I'll show you how to set it with the require hook.
 
-To understand [webpack](https://webpack.github.io/) configs you should be familiar with [loaders](https://webpack.github.io/docs/using-loaders.html). In order to use [CSS Modules](https://github.com/css-modules/css-modules) with [webpack](https://webpack.github.io/) you should set [css-loader](https://github.com/webpack/css-loader#css-modules). Also [extract-text-webpack-plugin](https://github.com/webpack/extract-text-webpack-plugin) provides you possibility to create pure CSS file. So eventually, your configuration should look similar to this:
+To understand [webpack](https://webpack.github.io/) configs you should be familiar with [loaders](https://webpack.github.io/docs/using-loaders.html). In order to use [CSS&nbsp;Modules](https://github.com/css-modules/css-modules) with [webpack](https://webpack.github.io/) you should set [css-loader](https://github.com/webpack/css-loader#css-modules). Also [extract-text-webpack-plugin](https://github.com/webpack/extract-text-webpack-plugin) provides you possibility to create pure CSS file. So eventually, your configuration should look similar to this:
 
 ```javascript
 module: {
@@ -79,4 +79,23 @@ Describes the simple [template engine](http://expressjs.com/en/advanced/developi
 // teaches node.js to load css files
 // uses external config cmrh.conf.js
 require('css-modules-require-hook/preset');
+```
+
+**Note** that to generate the same names in runtime as the CSS styles you should provide the same pattern to [webpack](https://webpack.github.io/) and to the require hook.
+
+Use `localIdentName` for [webpack](https://webpack.github.io/):
+
+```javascript
+loader: ExtractTextPlugin.extract('style',
+  'css?modules&localIdentName=[name]_[local]__[hash:base64:5]'),
+```
+
+and `generateScopedName` for the require hook. For example, if you use presets then you can put it to the `cmrh.conf.js` file:
+
+```javascript
+module.exports = {
+  // the custom template for the generic classes
+  generateScopedName: '[name]_[local]__[hash:base64:5]',
+};
+
 ```
