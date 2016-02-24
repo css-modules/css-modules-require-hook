@@ -26,6 +26,25 @@ In short [CSS Modules](https://github.com/css-modules/css-modules) provide modul
 
 The modern frontend is so tough that you have to use particular bundler systems in order to generate a simple CSS file. My favourite one is [webpack](https://webpack.github.io/), so I'll show you how to set it with the require hook.
 
+To understand [webpack](https://webpack.github.io/) configs you should be familiar with [loaders](https://webpack.github.io/docs/using-loaders.html). In order to use [CSS Modules](https://github.com/css-modules/css-modules) with [webpack](https://webpack.github.io/) you should set [css-loader](https://github.com/webpack/css-loader#css-modules). Also [extract-text-webpack-plugin](https://github.com/webpack/extract-text-webpack-plugin) provides you possibility to create pure CSS file. So eventually, your configuration should look similar to this:
+
+```javascript
+module: {
+  loaders: [
+    {
+      test: /\.css$/i,
+      loader: ExtractTextPlugin.extract('style',
+        'css?modules&localIdentName=[name]_[local]__[hash:base64:5]'),
+    },
+  ],
+},
+
+plugins: [
+  new ExtractTextPlugin('styles.css', {
+    allChunks: true
+  }),
+],
+```
 
 ### Backend
 
