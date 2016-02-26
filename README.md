@@ -130,7 +130,7 @@ Prepends custom plugins to the beginning of the PostCSS pipeline. Since the `req
 
 ### `use` array
 
-Provides the full list of PostCSS plugins to the pipeline. Providing this cancels `append`, `prepend`, `createImportedName`, `generateScopedName` options. Only synchronous plugins.
+Provides the full list of PostCSS plugins to the pipeline. Providing this cancels `append`, `prepend`, `createImportedName`, `generateScopedName` options. Synchronous plugins only.
 
 ### `preprocessCss` function
 
