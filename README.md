@@ -122,15 +122,15 @@ hook({
 
 ### `append` array
 
-Appends custom plugins to the end of the PostCSS pipeline.
+Appends custom plugins to the end of the PostCSS pipeline. Since the `require` function is synchronous, you should provide synchronous plugins only.
 
 ### `prepend` array
 
-Prepends custom plugins to the beginning of the PostCSS pipeline.
+Prepends custom plugins to the beginning of the PostCSS pipeline. Since the `require` function is synchronous, you should provide synchronous plugins only.
 
 ### `use` array
 
-Provides the full list of PostCSS plugins to the pipeline. Providing this cancels `append`, `prepend`, `createImportedName`, `generateScopedName` options.
+Provides the full list of PostCSS plugins to the pipeline. Providing this cancels `append`, `prepend`, `createImportedName`, `generateScopedName` options. Only synchronous plugins.
 
 ### `preprocessCss` function
 
