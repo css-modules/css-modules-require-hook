@@ -120,17 +120,23 @@ hook({
 });
 ```
 
-### `append` array
+### `devMode` boolean
 
-Appends custom plugins to the end of the PostCSS pipeline. Since the `require` function is synchronous, you should provide synchronous plugins only.
+Helps you to invalidate cache of all `require` calls. Usually used for the development purpose. Also overrides behavior, imposed by `NODE_ENV` environment variable. For example:
 
-### `prepend` array
+```javascript
+hook({
+  devMode: false,
+});
+```
 
-Prepends custom plugins to the beginning of the PostCSS pipeline. Since the `require` function is synchronous, you should provide synchronous plugins only.
+### `extensions` array
 
-### `use` array
+Attach the require hook to additional file extensions (for example `['.scss']`).
 
-Provides the full list of PostCSS plugins to the pipeline. Providing this cancels `append`, `prepend`, `createImportedName`, `generateScopedName` options. Synchronous plugins only.
+### `ignore` function|regex|string
+
+Provides possibility to exclude particular files from processing. Supports glob and regular expressions syntax. Also you may provide custom function.
 
 ### `preprocessCss` function
 
@@ -163,31 +169,31 @@ hook({
 });
 ```
 
-### `devMode` boolean
+### `processorOpts` object
 
-Helps you to invalidate cache of all `require` calls. Usually used for the development purpose. Also overrides behavior, imposed by `NODE_ENV` environment variable. For example:
+Provides possibility to pass custom options to the [LazyResult instance](https://github.com/postcss/postcss/blob/master/docs/api.md#processorprocesscss-opts). It can be usefull if you want to set the custom parser, for example: [postcss-less](https://github.com/gilt/postcss-less).
 
-```bash
+```javascript
+const hook = require('css-modules-require-hook');
+const lessParser = require('postcss-less').parse;
+
 hook({
-  devMode: false,
+  extensions: '.less',
+  processorOpts: {parser: lessParser},
 });
 ```
 
-### `extensions` array
+### `append` array
 
-Attach the require hook to additional file extensions (for example `['.scss']`).
+Appends custom plugins to the end of the PostCSS pipeline. Since the `require` function is synchronous, you should provide synchronous plugins only.
 
-### `ignore` function|regex|string
+### `prepend` array
 
-Provides possibility to exclude particular files from processing. Supports glob and regular expressions syntax. Also you may provide custom function.
+Prepends custom plugins to the beginning of the PostCSS pipeline. Since the `require` function is synchronous, you should provide synchronous plugins only.
 
-### `rootDir` string
+### `use` array
 
-Provides absolute path to the project directory. Providing this will result in better generated class names. It can be obligatory, if you run require hook and build tools (like [css-modulesify](https://github.com/css-modules/css-modulesify)) from different working directories.
-
-### `to` string
-
-Provides `to` option to the [LazyResult instance](https://github.com/postcss/postcss/blob/master/docs/api.md#processorprocesscss-opts).
+Provides the full list of PostCSS plugins to the pipeline. Providing this cancels `append`, `prepend`, `createImportedName`, `generateScopedName` options. Synchronous plugins only.
 
 ### `createImportedName` function
 
@@ -223,6 +229,11 @@ hook({
 ### `mode` string
 
 Short alias for the [postcss-modules-local-by-default](https://github.com/css-modules/postcss-modules-local-by-default) plugin's option.
+
+### `rootDir` string
+
+Provides absolute path to the project directory. Providing this will result in better generated class names. It can be obligatory, if you run require hook and build tools (like [css-modulesify](https://github.com/css-modules/css-modulesify)) from different working directories.
+
 
 ## Debugging
 
