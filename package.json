@@ -1,6 +1,6 @@
 {
   "name": "css-modules-require-hook",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "A require hook to compile CSS Modules on the fly",
   "main": "lib/index.js",
   "engines": {
@@ -42,7 +42,7 @@
     "glob-to-regexp": "^0.1.0",
     "icss-replace-symbols": "^1.0.2",
     "lodash": "^4.3.0",
-    "postcss": "^5.0.15",
+    "postcss": "^5.0.19",
     "postcss-modules-extract-imports": "^1.0.0",
     "postcss-modules-local-by-default": "^1.0.1",
     "postcss-modules-parser": "^1.1.0",
