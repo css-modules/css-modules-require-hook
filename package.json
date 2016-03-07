@@ -57,6 +57,7 @@
     "in-publish": "^2.0.0",
     "isparta": "^4.0.0",
     "mocha": "^2.4.5",
+    "postcss-less": "^0.2.0",
     "sinon": "^1.17.3"
   }
 }
