@@ -19,7 +19,7 @@
   "author": "Alexey Litvinov",
   "license": "MIT",
   "dependencies": {
-    "css-modules-require-hook": "^3.0.0",
+    "css-modules-require-hook": "^4.0.0",
     "express": "^4.13.4",
     "react": "^0.14.7",
     "react-dom": "^0.14.7"
