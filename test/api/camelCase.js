@@ -1,6 +1,5 @@
 const detachHook = require('../sugar').detachHook;
 const dropCache = require('../sugar').dropCache;
-const identity = require('lodash').lodash;
 
 suite('api/camelCase', () => {
   test('should add camel case keys in token', () => {
