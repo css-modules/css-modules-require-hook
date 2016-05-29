@@ -183,6 +183,10 @@ hook({
 });
 ```
 
+### `camelCase boolean`
+
+Camelizes exported class names. Similar to [css-loader?camelCase](https://github.com/webpack/css-loader#camel-case).
+
 ### `append` array
 
 Appends custom plugins to the end of the PostCSS pipeline. Since the `require` function is synchronous, you should provide synchronous plugins only.
