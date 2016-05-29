@@ -13,8 +13,8 @@
     "test": "npm run test:babel",
     "test:babel": "NODE_PATH=$(pwd)/test/tokens/node_modules $npm_package_scripts_test_unit --compilers js:babel-register",
     "test:coverage": "NODE_PATH=$(pwd)/test/tokens/node_modules babel-node --presets es2015 `npm bin`/isparta cover --report text --report html `npm bin`/_mocha -- --require test/setup.js --ui tdd test/*/*.js",
-    "test:node": "NODE_PATH=$(pwd)/test/tokens/node_modules $npm_package_scripts_test_unit --harmony_destructuring --harmony_spread_arrays --use_strict",
-    "test:watch": "NODE_PATH=$(pwd)/test/tokens/node_modules $npm_package_scripts_test_unit --watch --harmony_destructuring --harmony_spread_arrays --use_strict",
+    "test:node": "NODE_PATH=$(pwd)/test/tokens/node_modules $npm_package_scripts_test_unit --use_strict",
+    "test:watch": "NODE_PATH=$(pwd)/test/tokens/node_modules $npm_package_scripts_test_unit --watch --use_strict",
     "test:unit": "mocha --require test/setup.js --ui tdd test/*/*.js"
   },
   "repository": {
