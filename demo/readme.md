@@ -9,6 +9,8 @@ It's a small demo to show how to set up [css-modules-require-hook](https://githu
 Make sure that you have [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) and run these commands:
 
 ```bash
+$ git clone git@github.com:css-modules/css-modules-require-hook.git
+$ cd demo
 $ npm install
 $ npm run compile
 $ npm run start
