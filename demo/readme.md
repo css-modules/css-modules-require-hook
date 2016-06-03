@@ -10,7 +10,7 @@ Make sure that you have [Node.js](https://nodejs.org/en/) and [npm](https://www.
 
 ```bash
 $ git clone git@github.com:css-modules/css-modules-require-hook.git
-$ cd demo
+$ cd css-modules-require-hook/demo
 $ npm install
 $ npm run compile
 $ npm run start
