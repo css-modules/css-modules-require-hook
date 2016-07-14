@@ -2,3 +2,8 @@
 {
   composes: paragraph from 'awesome-theme/common.css';
 }
+
+.bar
+{
+  composes: button from '@privateorg/theme/common.css';
+}
