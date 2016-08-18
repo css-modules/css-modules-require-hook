@@ -1,3 +1,4 @@
 {
-  "foo": "_test_tokens_cases_compose_node_module_source__foo _test_tokens_node_modules_awesome_theme_common__paragraph _test_tokens_node_modules_awesome_theme_oceanic__color"
+  "foo": "_test_tokens_cases_compose_node_module_source__foo _test_tokens_node_modules_awesome_theme_common__paragraph _test_tokens_node_modules_awesome_theme_oceanic__color",
+  "bar": "_test_tokens_cases_compose_node_module_source__bar _test_tokens_node_modules_privateorg_theme_common__button"
 }
