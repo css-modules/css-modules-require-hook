@@ -230,6 +230,11 @@ hook({
 });
 ```
 
+### `hashPrefix` string
+
+Short alias for the [generic-names](https://github.com/css-modules/generic-names) helper option.
+Provides additional hash uniqueness. Might be useful for projects with several stylesheets sharing a same name.
+
 ### `mode` string
 
 Short alias for the [postcss-modules-local-by-default](https://github.com/css-modules/postcss-modules-local-by-default) plugin's option.
