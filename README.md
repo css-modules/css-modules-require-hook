@@ -203,7 +203,7 @@ Provides the full list of PostCSS plugins to the pipeline. Providing this cancel
 
 Short alias for the [postcss-modules-extract-imports](https://github.com/css-modules/postcss-modules-extract-imports) plugin's `createImportedName` option.
 
-### `generateScopedName` function
+### `generateScopedName` string|function
 
 Short alias for the [postcss-modules-scope](https://github.com/css-modules/postcss-modules-scope) plugin's option. Helps you to specify the custom way to build generic names for the class selectors.
 You may also use a string pattern similar to the webpack's [css-loader](https://github.com/webpack/css-loader#local-scope).
@@ -229,6 +229,11 @@ hook({
   }
 });
 ```
+
+### `hashPrefix` string
+
+Short alias for the [generic-names](https://github.com/css-modules/generic-names) helper option.
+Provides additional hash uniqueness. Might be useful for projects with several stylesheets sharing a same name.
 
 ### `mode` string
 
