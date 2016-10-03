@@ -3,5 +3,6 @@
 .gitignore
 .npmignore
 .travis.yml
-coverage
-demo
+coverage/*
+demo/*
+test/*
