@@ -53,6 +53,29 @@ require('css-modules-require-hook/preset');
 // const styles = require('./icon.css');
 ```
 
+
+### Using with babel-node / ES6 Imports
+You will need to create a `cmrh.conf.js` file within the directory as you are importing `css-modules-require-hook`.
+
+
+```javascript
+// server.js
+import csshook from 'css-modules-require-hook/preset' // import hook before routes
+import routes from '/shared/views/routes'
+
+// create server, etc
+```
+
+```javascript
+// cmrh.conf.js
+module.exports = {
+  // Same scope name as in webpack build
+  generateScopedName: '[name]__[local]___[hash:base64:5]',
+}
+```
+
+
+
 ### Development mode
 
 Usually, Node.js caches all the `require` calls by default. In order to invalidate cache for the purpose of development you should set the environment variable `NODE_ENV` to `development`. For example:
