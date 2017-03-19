@@ -8,4 +8,13 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
+[GNUmakefile]
+indent_style = tab
+
+[Makefile]
+indent_style = tab
+
+[makefile]
+indent_style = tab
+
 # cheat sheet: http://EditorConfig.org

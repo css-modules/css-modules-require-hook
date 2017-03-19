@@ -1,3 +1,5 @@
+'use strict';
+
 const basename = require('path').basename;
 const debug = require('debug')('css-modules:preset');
 const dirname = require('path').dirname;
