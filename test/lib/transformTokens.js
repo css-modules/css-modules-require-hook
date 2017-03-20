@@ -15,9 +15,11 @@ suite('lib/transformTokens', () => {
       assert.deepEqual(transformTokens({
         'k-e-bab': 'kebab case',
         's_na_ke': 'snake case',
+        'simple': 'aaa',
       }, true), {
         'k-e-bab': 'kebab case',
         's_na_ke': 'snake case',
+        'simple': 'aaa',
         'kEBab': 'kebab case',
         'sNaKe': 'snake case',
       });
@@ -27,27 +29,37 @@ suite('lib/transformTokens', () => {
       assert.deepEqual(transformTokens({
         'k-e-bab': 'kebab case',
         's_na_ke': 'snake case',
+        'simple': 'aaa',
       }, 'dashes'), {
         'k-e-bab': 'kebab case',
         's_na_ke': 'snake case',
+        'simple': 'aaa',
         'kEBab': 'kebab case',
       });
     });
 
-
-    assert.deepEqual(transformTokens({
-      'k-e-bab': 'kebab case',
-      's_na_ke': 'snake case',
-    }, 'dashesOnly'), {
-      'kEBab': 'kebab case',
+    test('`dashesOnly` -> should transform only keys with dashes', () => {
+      assert.deepEqual(transformTokens({
+        'k-e-bab': 'kebab case',
+        's_na_ke': 'snake case',
+        'simple': 'aaa',
+      }, 'dashesOnly'), {
+        's_na_ke': 'snake case',
+        'simple': 'aaa',
+        'kEBab': 'kebab case',
+      });
     });
 
-    assert.deepEqual(transformTokens({
-      'k-e-bab': 'kebab case',
-      's_na_ke': 'snake case',
-    }, 'only'), {
-      'kEBab': 'kebab case',
-      'sNaKe': 'snake case',
+    test('`only` -> should camelize keys', () => {
+      assert.deepEqual(transformTokens({
+        'k-e-bab': 'kebab case',
+        's_na_ke': 'snake case',
+        'simple': 'aaa',
+      }, 'only'), {
+        'simple': 'aaa',
+        'kEBab': 'kebab case',
+        'sNaKe': 'snake case',
+      });
     });
   });
 });
