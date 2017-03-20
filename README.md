@@ -206,9 +206,11 @@ hook({
 });
 ```
 
-### `camelCase boolean`
+### `camelCase boolean|string`
 
 Camelizes exported class names. Similar to [css-loader?camelCase](https://github.com/webpack/css-loader#camel-case).
+
+Available options: `true`, `dashes`, `only`, `dashesOnly`.
 
 ### `append` array
 
