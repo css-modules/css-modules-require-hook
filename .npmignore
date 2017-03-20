@@ -5,4 +5,5 @@
 .travis.yml
 coverage
 demo
+release.sh
 test
