@@ -187,8 +187,9 @@ hook({
   /**
    * @param  {string} css
    * @param  {string} filepath Absolute path to the file
+   * @param  {object} tokens
    */
-  processCss: function (css, filepath) { /* */ }
+  processCss: function (css, filepath, tokens) { /* */ }
 });
 ```
 
