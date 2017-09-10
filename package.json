@@ -1,6 +1,6 @@
 {
   "name": "css-modules-require-hook",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "A require hook to compile CSS Modules on the fly",
   "main": "lib/index.js",
   "engines": {
