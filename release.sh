@@ -22,7 +22,7 @@ case "$1" in
 esac
 
 # test the code
-npm run test:node || exit 1
+npm run test || exit 1
 # update package version
 npm --no-git-tag-version version "$versionType"
 git add package.json
@@ -30,8 +30,4 @@ version=`sed -n '/version/p' package.json|cut -d'"' -f4`
 git commit -m "version $version"
 git tag "$version"
 
-cli=node_modules/.bin
-${cli}/babel lib --out-dir lib              || exit 1
-${cli}/babel preset.js --out-file preset.js || exit 1
 npm publish
-git reset HEAD --hard
