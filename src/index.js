@@ -15,7 +15,7 @@ const Values = require('postcss-modules-values');
 const LocalByDefault = require('postcss-modules-local-by-default');
 const ExtractImports = require('postcss-modules-extract-imports');
 const Scope = require('postcss-modules-scope');
-const Parser = require('postcss-modules-parser');
+const ResolveImports = require('postcss-modules-resolve-imports');
 
 const debugFetch = require('debug')('css-modules:fetch');
 const debugSetup = require('debug')('css-modules:setup');
@@ -40,6 +40,7 @@ module.exports = function setupHook({
   debugSetup(arguments[0]);
   validate(arguments[0]);
 
+  const exts = toArray(extensions);
   const tokensByFile = {};
 
   // debug option is preferred NODE_ENV === 'development'
@@ -56,7 +57,7 @@ module.exports = function setupHook({
     // small fallback
     scopedName = (local, filename) => Scope.generateScopedName(local, relative(context, filename));
 
-  const plugins = (use || [
+  const plugins = use || [
     ...prepend,
     Values,
     mode
@@ -66,8 +67,9 @@ module.exports = function setupHook({
       ? new ExtractImports({createImportedName})
       : ExtractImports,
     new Scope({generateScopedName: scopedName}),
+    new ResolveImports({resolve: {extensions: exts}}),
     ...append,
-  ]).concat(new Parser({fetch})); // no pushing in order to avoid the possible mutations;
+  ];
 
   // https://github.com/postcss/postcss#options
   const runner = postcss(plugins);
@@ -99,7 +101,7 @@ module.exports = function setupHook({
     // https://github.com/postcss/postcss/blob/master/docs/api.md#lazywarnings
     lazyResult.warnings().forEach(message => console.warn(message.text));
 
-    tokens = lazyResult.root.tokens;
+    tokens = lazyResult.root.exports || {};
 
     if (!debugMode)
       // updating cache
@@ -117,7 +119,6 @@ module.exports = function setupHook({
     return tokens;
   }
 
-  const exts = toArray(extensions);
   const isException = buildExceptionChecker(ignore);
 
   const hook = filename => {
