@@ -1,5 +1,6 @@
 .DS_Store
 .npm
+lib
 node_modules
 npm-debug.log*
 yarn.lock
