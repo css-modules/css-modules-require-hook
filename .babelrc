@@ -1,5 +1,14 @@
 {
   "presets": [
-    "es2015"
-  ]
+    [
+      "env",
+      {
+        "loose": true,
+        "modules": "commonjs",
+        "targets": {
+          "node": 4,
+        },
+      },
+    ],
+  ],
 }

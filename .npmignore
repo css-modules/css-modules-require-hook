@@ -6,4 +6,6 @@
 coverage
 demo
 release.sh
+scripts
+src
 test
