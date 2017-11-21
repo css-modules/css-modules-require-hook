@@ -23,6 +23,7 @@ const debugSetup = require('debug')('css-modules:setup');
 module.exports = function setupHook({
   camelCase,
   devMode,
+  noCache,
   extensions = '.css',
   ignore,
   preprocessCss = identity,
@@ -87,11 +88,14 @@ module.exports = function setupHook({
       : resolve(dirname(from), _to);
 
     // checking cache
-    let tokens = tokensByFile[filename];
-    if (tokens) {
-      debugFetch(`${filename} → cache`);
-      debugFetch(tokens);
-      return tokens;
+    let tokens;
+    if (!noCache) {
+      tokens = tokensByFile[filename];
+      if (tokens) {
+        debugFetch(`${filename} → cache`);
+        debugFetch(tokens);
+        return tokens;
+      }
     }
 
     const source = preprocessCss(readFileSync(filename, 'utf8'), filename);
@@ -103,11 +107,11 @@ module.exports = function setupHook({
 
     tokens = lazyResult.root.exports || {};
 
-    if (!debugMode)
+    if (!debugMode && !noCache)
       // updating cache
       tokensByFile[filename] = tokens;
     else
-      // clearing cache in development mode
+      // clearing cache in development mode or with noCache option
       delete require.cache[filename];
 
     if (processCss)

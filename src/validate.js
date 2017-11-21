@@ -30,6 +30,7 @@ const rules = {
   hashPrefix: 'string',
   mode: 'string',
   rootDir: 'string',
+  noCache: 'boolean',
 };
 
 const tests = {
