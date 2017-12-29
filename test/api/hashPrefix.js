@@ -2,13 +2,13 @@ const detachHook = require('../sugar').detachHook;
 const dropCache = require('../sugar').dropCache;
 
 suite('api/hashPrefix', () => {
-  let samples = [];
+  const samples = [];
 
   suite('using string pattern and hashPrefix', () => {
     let tokens;
 
     test('should return tokens with prefixed id', () => assert.deepEqual(tokens, {
-      color: 'oceanic__color___3_npr',
+      color: 'oceanic__color___3xlBZ',
     }));
 
     setup(() => {

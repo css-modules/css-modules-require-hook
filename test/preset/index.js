@@ -7,7 +7,7 @@ suite('css-modules-require-hook/preset', () => {
       const tokens = require('./fixture/oceanic.css');
 
       assert.deepEqual(tokens, {
-        color: 'oceanic__color___1B_RT',
+        color: 'oceanic__color___1sqWL',
       });
     });
 
