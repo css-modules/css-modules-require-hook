@@ -23,7 +23,7 @@ suite('api/camelCase', () => {
     test('should replace keys with dashes by its camel-cased equivalent', () => {
       const tokens = require('./fixture/bem.css');
       assert.deepEqual(tokens, {
-        'block__element-Modifier': '_test_api_fixture_bem__block__element--modifier',
+        'block__elementModifier': '_test_api_fixture_bem__block__element--modifier',
       });
     });
 

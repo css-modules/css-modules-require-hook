@@ -8,7 +8,7 @@ suite('api/hashPrefix', () => {
     let tokens;
 
     test('should return tokens with prefixed id', () => assert.deepEqual(tokens, {
-      color: 'oceanic__color___3xlBZ',
+      color: 'oceanic__color___3_npr',
     }));
 
     setup(() => {

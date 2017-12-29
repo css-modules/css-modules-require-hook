@@ -41,7 +41,7 @@ suite('api/generateScopedName', () => {
     let tokens;
 
     test('should return tokens with id', () => assert.deepEqual(tokens, {
-      color: 'oceanic__color___1GAeQ',
+      color: 'oceanic__color___2YUy6',
     }));
 
     setup(() => {
