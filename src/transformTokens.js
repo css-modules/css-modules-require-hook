@@ -36,7 +36,7 @@ exports.transformTokens = transformTokens;
  * @return {string}
  */
 function camelizeDashes(str) {
-  return str.replace(/-(\w)/g, (m, letter) => letter.toUpperCase());
+  return str.replace(/-+(\w)/g, (m, letter) => letter.toUpperCase());
 }
 
 /**

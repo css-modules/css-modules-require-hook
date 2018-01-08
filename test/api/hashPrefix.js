@@ -2,7 +2,7 @@ const detachHook = require('../sugar').detachHook;
 const dropCache = require('../sugar').dropCache;
 
 suite('api/hashPrefix', () => {
-  let samples = [];
+  const samples = [];
 
   suite('using string pattern and hashPrefix', () => {
     let tokens;

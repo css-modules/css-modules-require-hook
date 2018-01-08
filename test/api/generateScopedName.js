@@ -8,7 +8,7 @@ suite('api/generateScopedName', () => {
     let args;
     let tokens;
 
-    const processor = spy(function (selector, filepath, source) {
+    const processor = spy((selector, filepath, source) => {
       args = [selector, filepath, source];
       return selector;
     });
