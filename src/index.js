@@ -34,6 +34,7 @@ module.exports = function setupHook({
   generateScopedName,
   hashPrefix,
   mode,
+  resolve: resolveOpts,
   use,
   rootDir: context = process.cwd(),
 }) {
@@ -67,7 +68,7 @@ module.exports = function setupHook({
       ? new ExtractImports({createImportedName})
       : ExtractImports,
     new Scope({generateScopedName: scopedName}),
-    new ResolveImports({resolve: {extensions: exts}}),
+    new ResolveImports({resolve: Object.assign({}, {extensions: exts}, resolveOpts)}),
     ...append,
   ];
 

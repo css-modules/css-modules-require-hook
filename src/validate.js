@@ -29,6 +29,7 @@ const rules = {
   generateScopedName: 'function|string',
   hashPrefix: 'string',
   mode: 'string',
+  resolve: 'object',
   rootDir: 'string',
 };
 

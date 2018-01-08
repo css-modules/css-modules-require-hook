@@ -264,6 +264,20 @@ Provides additional hash uniqueness. Might be useful for projects with several s
 
 Short alias for the [postcss-modules-local-by-default](https://github.com/css-modules/postcss-modules-local-by-default) plugin's option.
 
+
+### `resolve` object
+
+Changes the way the paths of ICSS imports will be resolved (`@value a from './b.css'` and `composes a from './b.css'`). Supports:
+
+- `resolve.alias` `object`
+- `resolve.extensions` `array` — default value is `['.css']`.
+- `resolve.modules` `array`
+- `resolve.mainFile` `array` — default value is `'index.css'`.
+- `resolve.preserveSymlinks` `boolean` — default value is `false`.
+
+See the detailed description at: https://github.com/css-modules/postcss-modules-resolve-imports#options
+
+
 ### `rootDir` string
 
 Provides absolute path to the project directory. Providing this will result in better generated class names. It can be obligatory, if you run require hook and build tools (like [css-modulesify](https://github.com/css-modules/css-modulesify)) from different working directories.
