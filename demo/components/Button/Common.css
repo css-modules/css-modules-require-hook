@@ -1,0 +1,11 @@
+.common
+{
+  display: inline-block;
+
+  cursor: pointer;
+  user-select: none;
+
+  text-align: center;
+  white-space: nowrap;
+  text-decoration: none;
+}

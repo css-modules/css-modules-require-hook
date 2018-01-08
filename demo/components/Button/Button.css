@@ -1,24 +1,24 @@
+@value primary, primaryShadow from 'Colors.css';
+
+.common
+{
+  composes: common from './Common.css';
+}
+
 .common,
 .common:active
 {
-  display: inline-block;
-
   margin: 0 0 20px;
   padding: 0 11px;
 
-  cursor: pointer;
-  user-select: none;
   transition: all .3s;
-  text-align: center;
-  white-space: nowrap;
-  text-decoration: none;
 
   color: #fff;
   border: none;
   border-radius: 5px;
   outline: none;
-  background: #43a047;
-  box-shadow: 0 5px 0 #2e7d32;
+  background: primary;
+  box-shadow: 0 5px 0 primaryShadow;
 
   font: normal 20px/38px Roboto;
 }

@@ -15,29 +15,37 @@ module.exports = {
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/i,
         exclude: /node_modules/,
-        loader: 'babel?presets[]=es2015,presets[]=react,presets[]=stage-0',
+        loader: 'babel-loader',
+        options: {
+          presets: ['es2015', 'react', 'stage-0'],
+        },
       },
       {
         test: /\.css$/i,
-        loader: ExtractTextPlugin.extract('style',
-          `css?modules&localIdentName=${config.css}!postcss`),
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                localIdentName: config.css,
+              },
+            },
+            'postcss-loader',
+          ],
+        }),
       },
     ],
   },
 
-  postcss: [
-    // small sugar for CSS
-    require('postcss-font-magician'),
-    require('autoprefixer'),
-  ],
-
   plugins: [
     new ExtractTextPlugin('common.css', {
-      allChunks: true
+      allChunks: true,
     }),
     new NpmInstallPlugin({
       cacheMin: 999999,
@@ -50,5 +58,5 @@ module.exports = {
     {
       react: true,
     },
-  ]
+  ],
 };
