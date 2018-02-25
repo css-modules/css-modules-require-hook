@@ -282,6 +282,10 @@ See the detailed description at: https://github.com/css-modules/postcss-modules-
 
 Provides absolute path to the project directory. Providing this will result in better generated class names. It can be obligatory, if you run require hook and build tools (like [css-modulesify](https://github.com/css-modules/css-modulesify)) from different working directories.
 
+### `noCache` boolean
+
+Do not cache module. You may need this option if you want to watch files. But expect the performance degradation when you call require for same file multiple times.
+
 
 ## Debugging
 

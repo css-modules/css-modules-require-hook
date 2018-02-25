@@ -31,6 +31,7 @@ const rules = {
   mode: 'string',
   resolve: 'object',
   rootDir: 'string',
+  noCache: 'boolean',
 };
 
 const tests = {
