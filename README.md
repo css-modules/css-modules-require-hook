@@ -272,7 +272,7 @@ Changes the way the paths of ICSS imports will be resolved (`@value a from './b.
 - `resolve.alias` `object`
 - `resolve.extensions` `array` — default value is `['.css']`.
 - `resolve.modules` `array`
-- `resolve.mainFile` `array` — default value is `'index.css'`.
+- `resolve.mainFile` `string` — default value is `'index.css'`.
 - `resolve.preserveSymlinks` `boolean` — default value is `false`.
 
 See the detailed description at: https://github.com/css-modules/postcss-modules-resolve-imports#options
