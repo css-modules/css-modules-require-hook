@@ -61,9 +61,7 @@ module.exports = function setupHook({
   const plugins = use || [
     ...prepend,
     Values,
-    mode
-      ? new LocalByDefault({mode})
-      : LocalByDefault,
+    new LocalByDefault({mode, generateScopedName: scopedName}),
     createImportedName
       ? new ExtractImports({createImportedName})
       : ExtractImports,
